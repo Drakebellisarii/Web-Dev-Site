@@ -194,7 +194,9 @@ export default function Hero() {
               <span className="hero__marquee-sep">✦</span>
               <em>Google Analytics</em>
               <span className="hero__marquee-sep">✦</span>
-              
+              <em>AIO</em>
+              <span className="hero__marquee-sep">✦</span>
+
             </span>
           ))}
         </div>
