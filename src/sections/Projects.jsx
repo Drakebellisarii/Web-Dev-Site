@@ -12,20 +12,21 @@ const PROJECTS = [
     description:
       'A living archive of design, code, and writing. Built as a slow-scrolling magazine. Each project gets its own spread, its own typography, its own pace.',
     tags: ['Brand', 'Portfolio', 'Editorial'],
-    video: '/Drake-Bellisari-Hero.mov',
-    videoPosition: 'left top',
+    video: '/Drake-hero.mov',
+    videoPosition: 'center center',
+    frameRatio: '16 / 9',
   },
   {
     no: '02',
     name: 'GPP Partners Group',
     url: 'https://www.gpppartnersgroup.com',
     domain: 'gpppartnersgroup.com',
-    role: 'Recruiuting Firm',
+    role: 'Recruiting Firm',
     year: '2025',
     description:
       'A composed identity for a boutique recruiting firm. Restrained typography, real-asset photography, and a quiet authority that holds up next to firms ten times the size.',
     tags: ['Recruiting', 'Identity', 'Marketing site'],
-    video: '/GPP-Hero.mov',
+    video: '/Connie-Hero.mov',
     videoPosition: 'center top',
   },
   {
@@ -113,7 +114,7 @@ function ProjectPanel({ project, index, total }) {
 
       <div className="project__inner shell">
         <motion.div className="project__visual" style={{ y: imageY }}>
-          <div className="project__frame">
+          <div className="project__frame" style={project.frameRatio ? { aspectRatio: project.frameRatio } : undefined}>
             {project.video ? (
               <video
                 className="project__screenshot"

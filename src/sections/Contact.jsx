@@ -17,7 +17,7 @@ export default function Contact() {
   const yRight = useTransform(scrollYProgress, [0, 1], ['60px', '-10px'])
 
   const [form, setForm] = useState({ name: '', email: '', service: '', message: '' })
-  const [status, setStatus] = useState('idle') // idle | sending | sent
+  const [status, setStatus] = useState('idle')
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -35,6 +35,7 @@ export default function Contact() {
   return (
     <section className="contact" id="contact" ref={ref}>
       <div className="shell">
+
         <div className="contact__head">
           <span className="eyebrow eyebrow--ember">
             <span className="eyebrow-dot" />
@@ -68,7 +69,7 @@ export default function Contact() {
                   <span className="contact__channel-val">dpbellisari@gmail.com</span>
                 </div>
               </a>
-              <a className="contact__channel" href="https://www.linkedin.com/in/dpbellisari" target="_blank" rel="noreferrer">
+              <a className="contact__channel" href="https://www.linkedin.com/in/drake-bellisari/" target="_blank" rel="noreferrer">
                 <span className="contact__channel-icon">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2" />
@@ -80,7 +81,7 @@ export default function Contact() {
                   <span className="contact__channel-val">Connect with me →</span>
                 </div>
               </a>
-              <a className="contact__channel" href="https://github.com/dpbellisari" target="_blank" rel="noreferrer">
+              <a className="contact__channel" href="https://github.com/Drakebellisarii" target="_blank" rel="noreferrer">
                 <span className="contact__channel-icon">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M8 2C4.69 2 2 4.69 2 8c0 2.65 1.72 4.9 4.1 5.69.3.06.41-.13.41-.29v-1.02c-1.67.36-2.02-.8-2.02-.8-.27-.69-.67-.87-.67-.87-.55-.37.04-.36.04-.36.6.04.92.62.92.62.54.92 1.41.66 1.75.5.06-.39.21-.66.38-.81-1.34-.15-2.74-.67-2.74-2.97 0-.66.23-1.2.62-1.62-.06-.15-.27-.77.06-1.6 0 0 .51-.16 1.67.62.48-.14.1-.28 1.5-.28s1.02.14 1.5.28c1.16-.78 1.67-.62 1.67-.62.33.83.12 1.45.06 1.6.39.42.62.96.62 1.62 0 2.31-1.41 2.82-2.75 2.97.22.19.41.56.41 1.13v1.68c0 .16.11.35.41.29C12.28 12.9 14 10.65 14 8c0-3.31-2.69-6-6-6z" fill="currentColor" />
@@ -109,25 +110,11 @@ export default function Contact() {
                 <div className="contact__form-row">
                   <div className="contact__field">
                     <label className="eyebrow" htmlFor="cf-name">Your name</label>
-                    <input
-                      id="cf-name"
-                      type="text"
-                      placeholder="Jane Smith"
-                      value={form.name}
-                      onChange={set('name')}
-                      required
-                    />
+                    <input id="cf-name" type="text" placeholder="Jane Smith" value={form.name} onChange={set('name')} required />
                   </div>
                   <div className="contact__field">
                     <label className="eyebrow" htmlFor="cf-email">Email address</label>
-                    <input
-                      id="cf-email"
-                      type="email"
-                      placeholder="jane@company.com"
-                      value={form.email}
-                      onChange={set('email')}
-                      required
-                    />
+                    <input id="cf-email" type="email" placeholder="jane@company.com" value={form.email} onChange={set('email')} required />
                   </div>
                 </div>
 
@@ -135,29 +122,16 @@ export default function Contact() {
                   <label className="eyebrow" htmlFor="cf-service">What are you looking for?</label>
                   <select id="cf-service" value={form.service} onChange={set('service')}>
                     <option value="">Select a service…</option>
-                    {SERVICE_OPTIONS.map((o) => (
-                      <option key={o} value={o}>{o}</option>
-                    ))}
+                    {SERVICE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 </div>
 
                 <div className="contact__field">
                   <label className="eyebrow" htmlFor="cf-message">Tell me about your project</label>
-                  <textarea
-                    id="cf-message"
-                    rows={5}
-                    placeholder="What does your business do? What do you want the site to accomplish? Any timing in mind?"
-                    value={form.message}
-                    onChange={set('message')}
-                    required
-                  />
+                  <textarea id="cf-message" rows={5} placeholder="What does your business do? What do you want the site to accomplish? Any timing in mind?" value={form.message} onChange={set('message')} required />
                 </div>
 
-                <button
-                  type="submit"
-                  className="contact__submit"
-                  disabled={status === 'sending'}
-                >
+                <button type="submit" className="contact__submit" disabled={status === 'sending'}>
                   {status === 'sending' ? 'Opening…' : (
                     <>
                       Send message
@@ -177,19 +151,19 @@ export default function Contact() {
             <a href="#top" className="footer__wordmark">
               Drake <em>Bellisari.</em>
             </a>
-            <span className="eyebrow">© MMXXVI — Drake Bellisari · Hartford, CT</span>
+            <span className="eyebrow">© 2026 · Hartford, CT</span>
           </div>
           <div className="footer__cols">
             <div>
               <span className="eyebrow">Navigation</span>
-              <a href="#about">About</a>
               <a href="#work">Projects</a>
               <a href="#skills">Skills</a>
+              <a href="#contact">Contact</a>
             </div>
             <div>
               <span className="eyebrow">Elsewhere</span>
-              <a href="https://github.com/dpbellisari" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="https://www.linkedin.com/in/dpbellisari" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://github.com/Drakebellisarii" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="https://www.linkedin.com/in/drake-bellisari/" target="_blank" rel="noreferrer">LinkedIn</a>
               <a href="https://www.instagram.com/dpbellisari" target="_blank" rel="noreferrer">Instagram</a>
             </div>
             <div>

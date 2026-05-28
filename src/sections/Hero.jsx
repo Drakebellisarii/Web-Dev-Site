@@ -1,26 +1,35 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
-function CharReveal({ text, delay = 0, className = '' }) {
-  const chars = text.split('')
+function CharReveal({ text, baseDelay = 0, className = '' }) {
   return (
-    <span className={className} aria-label={text} style={{ display: 'inline-flex', flexWrap: 'nowrap' }}>
-      {chars.map((ch, i) => (
-        <span key={i} style={{ display: 'inline-block', overflow: 'hidden', lineHeight: 1.05 }}>
+    <span
+      className={className}
+      aria-label={text}
+      style={{
+        display: 'inline-block',
+        overflow: 'hidden',
+        paddingRight: '0.06em',
+        marginRight: '-0.06em',
+      }}
+    >
+      <span style={{ display: 'inline-flex', flexWrap: 'nowrap' }}>
+        {text.split('').map((ch, i) => (
           <motion.span
+            key={i}
             style={{ display: 'inline-block' }}
-            initial={{ y: '110%', opacity: 0 }}
-            animate={{ y: '0%', opacity: 1 }}
+            initial={{ y: '115%' }}
+            animate={{ y: '0%' }}
             transition={{
-              delay: delay + i * 0.038,
-              duration: 0.72,
+              delay: baseDelay + i * 0.045,
+              duration: 0.82,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
             {ch === ' ' ? ' ' : ch}
           </motion.span>
-        </span>
-      ))}
+        ))}
+      </span>
     </span>
   )
 }
@@ -35,12 +44,15 @@ export default function Hero() {
 
   const fadeUp = {
     hidden: { y: 28, opacity: 0 },
-    show: (i = 0) => ({ y: 0, opacity: 1, transition: { delay: 0.1 + i * 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] } }),
+    show: (i = 0) => ({
+      y: 0,
+      opacity: 1,
+      transition: { delay: 0.1 + i * 0.1, duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+    }),
   }
 
   return (
     <section className="hero" id="top" ref={ref}>
-      {/* Video background */}
       <motion.div className="hero__video-wrap" style={{ scale: videoScale }}>
         <video
           ref={videoRef}
@@ -55,10 +67,8 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Overlay */}
       <div className="hero__overlay" />
 
-      {/* Content */}
       <motion.div className="hero__content shell" style={{ y: yText, opacity: opacityContent }}>
         <motion.div
           className="hero__eyebrow"
@@ -68,15 +78,19 @@ export default function Hero() {
           custom={0}
         >
           <span className="eyebrow-dot" />
-          <span className="eyebrow eyebrow--ember">Computer Science · Cybersecurity</span>
+          <span className="eyebrow eyebrow--ember">Web Development · Cybersecurity · Design</span>
         </motion.div>
 
         <h1 className="hero__title display">
           <span className="hero__line">
-            <CharReveal text="Drake" delay={0.18} />
+            <CharReveal text="Drake" baseDelay={0.2} />
           </span>
           <span className="hero__line">
-            <CharReveal text="Bellisari." delay={0.42} className="hero__ember display-italic" />
+            <CharReveal
+              text="Bellisari."
+              baseDelay={0.52}
+              className="hero__ember display-italic"
+            />
           </span>
         </h1>
 
@@ -89,16 +103,16 @@ export default function Hero() {
             custom={4}
           >
             <p className="hero__lede">
-              B.S. in Computer Science with an Experiential Certificate in Cybersecurity from{' '}
-              <strong>Trinity College</strong> in Hartford, CT. Originally from{' '}
-              <strong>Columbus, Ohio</strong>. I build thoughtful, secure digital experiences
-              that sit at the intersection of design and engineering.
+              I design and build websites, web apps, and digital brands for businesses
+              that want to grow online. B.S. in Computer Science with a Cybersecurity
+              Certificate from <strong>Trinity College</strong>. Based in{' '}
+              <strong>Hartford, CT</strong> — originally from <strong>Columbus, OH</strong>.
             </p>
             <ul className="hero__signals">
-              <li><Cross stroke="var(--ember)" size={10} /> Computer Science</li>
-              <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
-              <li><Cross stroke="var(--ember)" size={10} /> Web Development</li>
+              <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
+              <li><Cross stroke="var(--ember)" size={10} /> Web Apps &amp; APIs</li>
               <li><Cross stroke="var(--ember)" size={10} /> UI / UX Design</li>
+              <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
             </ul>
           </motion.div>
 
@@ -142,7 +156,6 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Scroll cue */}
       <motion.div
         className="hero__scroll"
         initial={{ opacity: 0 }}
@@ -153,7 +166,6 @@ export default function Hero() {
         <span className="hero__scroll-line" />
       </motion.div>
 
-      {/* Marquee */}
       <div className="hero__marquee" aria-hidden>
         <div className="hero__marquee-track">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -176,6 +188,13 @@ export default function Hero() {
               <span className="hero__marquee-sep">✦</span>
               <em>Affordable</em>
               <span className="hero__marquee-sep">✦</span>
+              <em>Hosting</em>
+              <span className="hero__marquee-sep">✦</span>
+              <em>Maintenance</em>
+              <span className="hero__marquee-sep">✦</span>
+              <em>Google Analytics</em>
+              <span className="hero__marquee-sep">✦</span>
+              
             </span>
           ))}
         </div>

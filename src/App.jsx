@@ -2,10 +2,12 @@ import { useEffect } from 'react'
 import Lenis from 'lenis'
 import Nav from './sections/Nav'
 import Hero from './sections/Hero'
-import Manifesto from './sections/Manifesto'
 import Projects from './sections/Projects'
 import Process from './sections/Process'
+import Steps from './sections/Steps'
 import Contact from './sections/Contact'
+import Cursor from './components/Cursor'
+import Scrollbar from './components/Scrollbar'
 import './app.css'
 
 export default function App() {
@@ -29,12 +31,14 @@ export default function App() {
 
   return (
     <div className="app">
+      <Cursor />
+      <Scrollbar />
       <Nav />
       <main>
         <Hero />
         <Projects />
         <Process />
-        <Manifesto />
+        <Steps />
         <Contact />
       </main>
     </div>

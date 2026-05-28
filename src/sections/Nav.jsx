@@ -28,7 +28,7 @@ export default function Nav() {
           <a href="#contact">Contact</a>
         </nav>
 
-        <div className="nav__sep nav__sep--hide" aria-hidden />
+        <div className="nav__sep" aria-hidden />
 
         <div className="nav__location">
           <span className="nav__pulse" aria-hidden />
