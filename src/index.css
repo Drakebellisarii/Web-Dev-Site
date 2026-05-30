@@ -72,12 +72,9 @@ body {
   body { cursor: auto; }
 }
 
-/* Ember scrollbar */
-html::-webkit-scrollbar { width: 6px; }
-html::-webkit-scrollbar-track { background: transparent; }
-html::-webkit-scrollbar-thumb { background: #c04a18; border-radius: 999px; }
-html::-webkit-scrollbar-thumb:hover { background: #9a3a13; }
-html { scrollbar-width: thin; scrollbar-color: #c04a18 transparent; }
+/* Native scrollbar hidden — custom orange thumb component handles this */
+html::-webkit-scrollbar { width: 0; }
+html { scrollbar-width: none; }
 
 /* Selection — burnt orange ink on parchment */
 ::selection {

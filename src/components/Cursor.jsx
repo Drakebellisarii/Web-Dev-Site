@@ -6,6 +6,9 @@ const RING_SPRING = { mass: 0.3,  damping: 18, stiffness: 90  }
 
 export default function Cursor() {
   const [hovered, setHovered] = useState(false)
+  const [isTouch] = useState(
+    () => typeof window !== 'undefined' && !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  )
 
   const dotX  = useSpring(useMotionValue(-200), DOT_SPRING)
   const dotY  = useSpring(useMotionValue(-200), DOT_SPRING)
@@ -44,6 +47,8 @@ export default function Cursor() {
       document.removeEventListener('pointerout', out)
     }
   }, [dotX, dotY, ringX, ringY, opacity])
+
+  if (isTouch) return null
 
   // Both elements use a zero-size anchor at the cursor position.
   // The inner span is absolutely centered on that anchor via top/left 50% + translate(-50%,-50%).

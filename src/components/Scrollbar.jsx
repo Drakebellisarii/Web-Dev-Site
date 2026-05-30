@@ -1,12 +1,16 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useScroll, useSpring } from 'framer-motion'
 
 export default function Scrollbar() {
+  const [isTouch] = useState(
+    () => typeof window !== 'undefined' && !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  )
   const thumbRef = useRef(null)
   const { scrollYProgress } = useScroll()
   const spring = useSpring(scrollYProgress, { stiffness: 220, damping: 34, restDelta: 0.001 })
 
   useEffect(() => {
+    if (isTouch) return
     const thumb = thumbRef.current
     if (!thumb) return
 
@@ -36,7 +40,9 @@ export default function Scrollbar() {
       window.removeEventListener('resize', onResize)
       ro.disconnect()
     }
-  }, [spring])
+  }, [isTouch, spring])
+
+  if (isTouch) return null
 
   return (
     <div style={{

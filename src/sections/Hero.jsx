@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 function CharReveal({ text, baseDelay = 0, className = '' }) {
@@ -41,6 +41,34 @@ export default function Hero() {
   const yText = useTransform(scrollYProgress, [0, 1], ['0%', '-22%'])
   const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !window.matchMedia('(max-width: 720px)').matches) return
+
+    const CLIP = 6
+    const getStart = () => Math.max(0, video.duration - CLIP)
+
+    const onLoaded = () => {
+      video.loop = false
+      video.currentTime = getStart()
+    }
+
+    const onEnded = () => {
+      video.currentTime = getStart()
+      video.play()
+    }
+
+    video.addEventListener('loadedmetadata', onLoaded)
+    video.addEventListener('ended', onEnded)
+    if (video.readyState >= 1) onLoaded()
+
+    return () => {
+      video.removeEventListener('loadedmetadata', onLoaded)
+      video.removeEventListener('ended', onEnded)
+      video.loop = true
+    }
+  }, [])
 
   const fadeUp = {
     hidden: { y: 28, opacity: 0 },

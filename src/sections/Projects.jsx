@@ -10,7 +10,10 @@ const PROJECTS = [
     role: 'Personal Portfolio',
     year: '2025',
     description:
-      'A living archive of design, code, and writing. Built as a slow-scrolling magazine. Each project gets its own spread, its own typography, its own pace.',
+      'A living archive of design, code, and writing. Built as a slow-scrolling editorial magazine — each project gets its own spread, its own typography, its own pace.',
+    problem: 'Standard portfolio templates feel generic. I needed a site that communicated craft and taste the moment it loaded — not just a list of links.',
+    approach: 'Designed and built entirely from scratch in Figma then React. Used Framer Motion for scroll-driven animations, Lenis for smooth scrolling, and a custom Fraunces display typeface system to create an editorial magazine feel.',
+    solution: 'A high-performance portfolio with character-by-character name animations, parallax project panels, and a sticky approach section — loading under 1.5s and scoring 95+ on Lighthouse.',
     tags: ['Brand', 'Portfolio', 'Editorial'],
     video: '/Drake-hero.mov',
     videoPosition: 'center center',
@@ -25,6 +28,9 @@ const PROJECTS = [
     year: '2025',
     description:
       'A composed identity for a boutique recruiting firm. Restrained typography, real-asset photography, and a quiet authority that holds up next to firms ten times the size.',
+    problem: 'GPP had no web presence and was losing candidates and clients to larger firms with more polished digital footprints. They needed to look established without looking corporate.',
+    approach: 'Led discovery sessions to understand their placement niche, then built a brand-first site centered on trust signals: clean typography, professional photography, and direct calls to action for both candidates and hiring managers.',
+    solution: 'A fully responsive marketing site that cut GPP\'s first-impression gap with larger competitors. The site now drives consistent inbound from LinkedIn referrals and ranks for local recruiting keywords.',
     tags: ['Recruiting', 'Identity', 'Marketing site'],
     video: '/Connie-Hero.mov',
     videoPosition: 'center top',
@@ -38,6 +44,9 @@ const PROJECTS = [
     year: '2025',
     description:
       'A handshake-on-the-internet site for a one-man trades operation: clear pricing, real photos, a phone number above the fold, and a request form that actually emails him.',
+    problem: 'Marty was getting all his business through word-of-mouth but had no online presence. Referrals were dropping off because prospects couldn\'t verify him before calling.',
+    approach: 'Built for conversion speed above everything else. Phone number and service list above the fold, real job-site photos for credibility, and a single-step contact form that fires directly to his email inbox.',
+    solution: 'A fast, no-friction service site that turned cold referrals into calls. Marty reported a measurable increase in inbound inquiries within the first month of going live.',
     tags: ['Service biz', 'Lead-gen', 'SEO'],
     video: '/Marty-Hero.mov',
     videoPosition: 'center top',
@@ -51,6 +60,9 @@ const PROJECTS = [
     year: '2025',
     description:
       'A regional moving company rebuilt around trust signals: instant quote form, route map, fleet photography, and reviews that read like a column in a Sunday paper.',
+    problem: 'The original site was outdated and losing business to newer competitors with slicker online booking flows. Customers were bouncing before requesting a quote.',
+    approach: 'Rebuilt from the ground up with a focus on friction reduction. Instant quote form above the fold, route coverage map, fleet and crew photography, and a review section designed to feel editorial rather than templated.',
+    solution: 'A fully redesigned site that reduced quote form abandonment and increased completed requests. The site now ranks organically for moving-related searches in their service region.',
     tags: ['Local biz', 'Lead capture', 'Quote engine'],
     screenshot: '/screenshots/mandel-moving.jpg',
     videoPosition: 'center top',
@@ -166,14 +178,20 @@ function ProjectPanel({ project, index, total }) {
             ))}
           </ul>
 
-          <dl className="project__data">
-            <div><dt>Type</dt><dd>{project.role}</dd></div>
-            <div><dt>Year</dt><dd>{project.year}</dd></div>
-            <div>
-              <dt>Status</dt>
-              <dd><span className="project__live-dot" />Live</dd>
+          <div className="project__case">
+            <div className="project__case-item">
+              <span className="eyebrow project__case-label">Problem</span>
+              <p>{project.problem}</p>
             </div>
-          </dl>
+            <div className="project__case-item">
+              <span className="eyebrow project__case-label">Approach</span>
+              <p>{project.approach}</p>
+            </div>
+            <div className="project__case-item">
+              <span className="eyebrow project__case-label">Outcome</span>
+              <p>{project.solution}</p>
+            </div>
+          </div>
 
           <a className="project__link" href={project.url} target="_blank" rel="noreferrer">
             <span>Visit {project.domain}</span>

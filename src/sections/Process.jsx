@@ -82,7 +82,6 @@ export default function Process() {
 
   return (
     <section className="process" id="skills" ref={ref}>
-      {/* Animated path background — only in this section */}
       <FloatingPaths position={1} />
       <FloatingPaths position={-1} />
 
@@ -98,16 +97,49 @@ export default function Process() {
           </h2>
         </header>
 
-        <div className="process__rail">
+        {/* Desktop — scroll-driven rail */}
+        <div className="process__rail process__desktop-only">
           <div className="process__rail-track" />
           <motion.div className="process__rail-fill" style={{ height: lineFill }} />
-
           {SKILLS.map((s, i) => (
             <Step key={s.n} step={s} index={i} progress={scrollYProgress} total={SKILLS.length} />
           ))}
         </div>
+
+        {/* Mobile — viewport-triggered editorial entries */}
+        <div className="process__mobile-entries process__mobile-only">
+          {SKILLS.map((s, i) => (
+            <MobileEntry key={s.n} step={s} index={i} />
+          ))}
+        </div>
       </div>
     </section>
+  )
+}
+
+function MobileEntry({ step, index }) {
+  return (
+    <motion.article
+      className="process-entry"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{
+        duration: 0.55,
+        delay: index * 0.06,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+    >
+      {/* Giant ghost roman numeral — watermark behind content */}
+      <span className="process-entry__ghost display" aria-hidden>{step.n}</span>
+
+      <div className="process-entry__content">
+        <span className="process-entry__tag eyebrow eyebrow--ember">{step.tag}</span>
+        <h3 className="process-entry__title display">{step.title}</h3>
+        <div className="process-entry__rule" aria-hidden />
+        <p className="process-entry__body">{step.body}</p>
+      </div>
+    </motion.article>
   )
 }
 
