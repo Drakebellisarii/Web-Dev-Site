@@ -2,71 +2,83 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 const PROJECTS = [
-  {
-    no: '01',
-    name: 'Drake Bellisari',
-    url: 'https://www.drakebellisari.com',
-    domain: 'drakebellisari.com',
-    role: 'Personal Portfolio',
-    year: '2025',
-    description:
-      'This is the site you\'re looking at. Built as a slow-scrolling editorial magazine where every project gets its own spread, its own type, its own pace. No templates, no shortcuts.',
-    problem: 'Every portfolio on the internet looks like the same portfolio. The goal was something that showed craft the second it loaded, not after clicking through three pages.',
-    approach: 'Started in Figma, finished in React. Framer Motion handles the scroll animations, Lenis keeps everything smooth, and Fraunces does the heavy typographic lifting throughout.',
-    solution: 'Loads under 1.5 seconds and scores 95+ on Lighthouse. The character-by-character title reveal and parallax project panels were the most commented-on details after launch.',
-    tags: ['Brand', 'Portfolio', 'Editorial'],
-    video: '/Drake-hero.mov',
-    videoPosition: 'center center',
-    frameRatio: '16 / 9',
-  },
-  {
-    no: '02',
-    name: 'GPP Partners Group',
-    url: 'https://www.gpppartnersgroup.com',
-    domain: 'gpppartnersgroup.com',
-    role: 'Recruiting Firm',
-    year: '2025',
-    description:
-      'GPP is a boutique recruiting firm that was essentially invisible online. Restrained typography, real photography, and the kind of quiet authority that holds up next to firms ten times their size.',
-    problem: 'No web presence meant losing candidates and clients to bigger firms with better-looking sites. They needed to look established without going corporate.',
-    approach: 'Started with a few calls to understand who they place and who they\'re trying to attract. Then built around trust signals: clean type, professional photography, and clear paths for both candidates and hiring managers.',
-    solution: 'The site now drives consistent inbound from LinkedIn referrals and ranks for local recruiting keywords. The first-impression gap with larger competitors is essentially gone.',
-    tags: ['Recruiting', 'Identity', 'Marketing site'],
-    video: '/Connie-Hero.mov',
-    videoPosition: 'center top',
-  },
-  {
-    no: '03',
-    name: 'Marty B Solutions',
-    url: 'https://marty-b-solutions.vercel.app',
-    domain: 'marty-b-solutions.vercel.app',
-    role: 'Trades & Services',
-    year: '2025',
-    description:
-      'Marty runs a one-man trades operation and his work speaks for itself. We made sure strangers on the internet could figure that out without having to cold-call him first.',
-    problem: 'All of his business came through word-of-mouth, but referrals kept falling through because people couldn\'t find him online to verify he was legit before calling.',
-    approach: 'Built around one goal: get someone to call or fill out the form. Phone number above the fold, real job-site photos, a short service list, and a contact form that goes straight to his inbox.',
-    solution: 'Marty saw a measurable jump in inbound inquiries in the first month. Cold referrals that used to go cold now convert because people can see the work before picking up the phone.',
-    tags: ['Service biz', 'Lead-gen', 'SEO'],
-    video: '/Marty-Hero.mov',
-    videoPosition: 'center top',
-  },
-  {
-    no: '04',
-    name: 'Mandel Moving',
-    url: 'https://www.mandelmoving.com',
-    domain: 'mandelmoving.com',
-    role: 'Local Moving Co.',
-    year: '2025',
-    description:
-      'Mandel had the trucks, the crew, and the reviews. What they didn\'t have was a site that showed any of it. We rebuilt from scratch around the things that actually make someone request a quote.',
-    problem: 'The old site was losing customers before they ever reached the quote form. Newer competitors with cleaner sites were winning on first impression and Mandel had no way to fight back.',
-    approach: 'Put the quote form front and center, added a route map so visitors immediately know if Mandel serves their area, brought in real fleet photography, and gave the reviews section a treatment that doesn\'t look like a generic widget.',
-    solution: 'Quote form completions went up and the site now ranks organically for moving searches in their region, pulling in leads that weren\'t reachable before.',
-    tags: ['Local biz', 'Lead capture', 'Quote engine'],
-    screenshot: '/screenshots/mandel-moving.jpg',
-    videoPosition: 'center top',
-  },
+ {
+no: '01',
+name: 'Drake Bellisari',
+url: 'https://www.drakebellisari.com',
+domain: 'drakebellisari.com',
+role: 'Personal Website',
+year: '2025',
+description:
+'My personal website and the place where most people get introduced to my work. It brings together software projects, web design work, professional experience, and a bit about who I am outside of a resume.',
+problem:
+'I wanted a single place where recruiters, potential clients, and other developers could quickly understand what I build and how I think. Most portfolios either feel generic or only show finished projects without much context behind them.',
+approach:
+'Designed the site in Figma and built it with React. The goal was to create something that felt polished without getting in the way of the content. Framer Motion handles the animations, Lenis keeps scrolling smooth, and every section was designed to make exploring projects feel natural.',
+solution:
+'The result is a fast, responsive site that serves as both a portfolio and a professional home base. It gives visitors a clear picture of my technical skills, design approach, and the kinds of projects I enjoy building.',
+tags: ['Portfolio', 'Web Development', 'Personal Brand'],
+video: '/Drake-hero.mov',
+videoPosition: 'center center',
+frameRatio: '16 / 9',
+},
+{
+no: '02',
+name: 'GPP Partners Group',
+url: 'https://www.gpppartnersgroup.com',
+domain: 'gpppartnersgroup.com',
+role: 'Recruiting Firm',
+year: '2025',
+description:
+'GPP Partners Group is a boutique recruiting firm focused on building strong relationships with both candidates and employers. The website was designed to reflect that professionalism while making it easier for visitors to learn about their services.',
+problem:
+'The company had little online presence, making it difficult for potential clients and candidates to learn about the firm before reaching out. They needed a website that established credibility without feeling overly corporate.',
+approach:
+'Started by understanding their recruiting process, target audience, and brand personality. The site was built around clear messaging, professional photography, and simple navigation that guides both employers and job seekers to the information they need.',
+solution:
+'The finished site gives GPP a professional online presence that supports referrals, outreach efforts, and day-to-day business development. It provides visitors with a clear understanding of who they are and what they offer.',
+tags: ['Recruiting', 'Business Website', 'Professional Services'],
+video: '/Connie-Hero.mov',
+videoPosition: 'center top',
+},
+{
+no: '03',
+name: 'Marty B Solutions',
+url: 'https://marty-b-solutions.vercel.app',
+domain: 'marty-b-solutions.vercel.app',
+role: 'Trades & Services',
+year: '2026',
+description:
+'A straightforward website for a local trades business focused on showcasing completed work and making it easy for customers to get in touch.',
+problem:
+'Most of Marty’s business came through referrals, but potential customers often had no easy way to verify his work or learn about his services before making contact.',
+approach:
+'Built the site around a simple goal: help visitors quickly understand what services are offered and provide a clear path to reach out. Real project photos, concise service descriptions, and prominent contact information became the foundation of the experience.',
+solution:
+'The website gives referrals a place to learn more about the business before calling and provides a professional online presence that supports future growth.',
+tags: ['Service Business', 'Lead Generation', 'Local Business'],
+video: '/Marty-Hero.mov',
+videoPosition: 'center top',
+},
+{
+no: '04',
+name: 'Mandel Moving',
+url: 'https://www.mandelmoving.com',
+domain: 'mandelmoving.com',
+role: 'Local Moving Company',
+year: '2026',
+description:
+'A complete website redesign for a moving company that needed its online presence to better reflect the quality of its services and reputation.',
+problem:
+'The existing website did not effectively communicate the company’s experience, service areas, or customer reviews. Important information was difficult to find and the overall presentation felt outdated.',
+approach:
+'Focused on making the customer journey as straightforward as possible. Service areas, quote requests, customer reviews, and company information were reorganized into a cleaner structure supported by updated visuals and improved usability.',
+solution:
+'The redesign provides a more professional first impression and makes it easier for prospective customers to learn about the company, request a quote, and determine whether Mandel serves their area.',
+tags: ['Local Business', 'Website Redesign', 'Lead Generation'],
+screenshot: '/screenshots/mandel-moving.jpg',
+videoPosition: 'center top',
+},
 ]
 
 export default function Projects() {
