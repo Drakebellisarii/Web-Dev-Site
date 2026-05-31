@@ -305,6 +305,7 @@
   .hero__cta { justify-content: center; }
   .hero__intro { max-width: 100%; }
   .hero__video { object-position: center center; }
+  .hero__marquee-track { animation-duration: 50s; }
 }
 
 .hero__scroll {
@@ -355,14 +356,17 @@
 }
 .hero__marquee-track {
   display: flex;
-  gap: 32px;
+  gap: 0;
   white-space: nowrap;
-  animation: marquee 50s linear infinite;
+  will-change: transform;
+  animation: marquee 22s linear infinite;
 }
 .hero__marquee-track > span {
   display: inline-flex;
   align-items: center;
   gap: 32px;
+  padding-right: 32px;
+  flex-shrink: 0;
 }
 .hero__marquee-sep {
   color: var(--ember);
@@ -370,7 +374,7 @@
   font-family: var(--body);
 }
 @keyframes marquee {
-  to { transform: translateX(-50%); }
+  to { transform: translateX(var(--marquee-shift, -50%)); }
 }
 
 /* ---------- MANIFESTO ---------- */
@@ -1204,7 +1208,7 @@
 }
 
 @media (max-width: 720px) {
-  .steps { height: 200vh; }
+  .steps { height: 320vh; }
 
   .steps__banner { padding: 18px 28px 16px; }
 

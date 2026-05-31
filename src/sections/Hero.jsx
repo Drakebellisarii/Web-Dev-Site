@@ -37,6 +37,19 @@ function CharReveal({ text, baseDelay = 0, className = '' }) {
 export default function Hero() {
   const ref = useRef(null)
   const videoRef = useRef(null)
+  const marqueeRef = useRef(null)
+
+  useEffect(() => {
+    const track = marqueeRef.current
+    if (!track) return
+    const setShift = () => {
+      const span = track.firstElementChild
+      if (span) track.style.setProperty('--marquee-shift', `-${span.offsetWidth}px`)
+    }
+    setShift()
+    window.addEventListener('resize', setShift)
+    return () => window.removeEventListener('resize', setShift)
+  }, [])
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const yText = useTransform(scrollYProgress, [0, 1], ['0%', '-22%'])
   const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0])
@@ -106,16 +119,16 @@ export default function Hero() {
           custom={0}
         >
           <span className="eyebrow-dot" />
-          <span className="eyebrow eyebrow--ember">Web Development · Cybersecurity · Design</span>
+          <span className="eyebrow eyebrow--ember">Web Agency · Design &amp; Development</span>
         </motion.div>
 
         <h1 className="hero__title display">
           <span className="hero__line">
-            <CharReveal text="Drake" baseDelay={0.2} />
+            <CharReveal text="Drake's" baseDelay={0.2} />
           </span>
           <span className="hero__line">
             <CharReveal
-              text="Bellisari."
+              text="Sites."
               baseDelay={0.52}
               className="hero__ember display-italic"
             />
@@ -131,15 +144,15 @@ export default function Hero() {
             custom={4}
           >
             <p className="hero__lede">
-              I design and build websites, web apps, and digital brands for businesses
-              that want to grow online. B.S. in Computer Science with a Cybersecurity
-              Certificate from <strong>Trinity College</strong>. Based in{' '}
-              <strong>Hartford, CT</strong> — originally from <strong>Columbus, OH</strong>.
+              We design and build websites, web apps, and digital brands for businesses
+              ready to compete online. Founded by <strong>Drake Bellisari</strong> — B.S.
+              Computer Science, Cybersecurity Certificate from{' '}
+              <strong>Trinity College</strong>. Boutique scale. No agency overhead.
             </p>
             <ul className="hero__signals">
               <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
               <li><Cross stroke="var(--ember)" size={10} /> Web Apps &amp; APIs</li>
-              <li><Cross stroke="var(--ember)" size={10} /> UI / UX Design</li>
+              <li><Cross stroke="var(--ember)" size={10} /> SEO &amp; Growth</li>
               <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
             </ul>
           </motion.div>
@@ -152,10 +165,10 @@ export default function Hero() {
             custom={5}
           >
             <a href="#work" className="btn btn--primary">
-              <span>View Projects</span>
+              <span>View Our Work</span>
               <ArrowDown />
             </a>
-            <a href="#contact" className="btn btn--ghost">Get in touch</a>
+            <a href="#contact" className="btn btn--ghost">Start a Project</a>
           </motion.div>
         </div>
 
@@ -166,20 +179,20 @@ export default function Hero() {
           transition={{ delay: 0.9, duration: 1.2 }}
         >
           <div className="hero__index-cell">
-            <span className="eyebrow">Degree</span>
-            <span className="hero__index-val">B.S. Comp. Sci.</span>
+            <span className="eyebrow">Founded by</span>
+            <span className="hero__index-val">Drake Bellisari</span>
           </div>
           <div className="hero__index-cell">
-            <span className="eyebrow">Certificate</span>
-            <span className="hero__index-val">Cybersecurity</span>
+            <span className="eyebrow">Credentials</span>
+            <span className="hero__index-val">B.S. CS · Cybersecurity</span>
           </div>
           <div className="hero__index-cell">
-            <span className="eyebrow">Institution</span>
-            <span className="hero__index-val">Trinity College</span>
+            <span className="eyebrow">Based in</span>
+            <span className="hero__index-val">Hartford, CT</span>
           </div>
           <div className="hero__index-cell">
-            <span className="eyebrow">Hometown</span>
-            <span className="hero__index-val">Columbus, OH</span>
+            <span className="eyebrow">Response</span>
+            <span className="hero__index-val">&lt; Taking Clients</span>
           </div>
         </motion.div>
       </motion.div>
@@ -190,15 +203,19 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
       >
-        <span className="eyebrow">Scroll · Featured Work</span>
+        
         <span className="hero__scroll-line" />
       </motion.div>
 
       <div className="hero__marquee" aria-hidden>
-        <div className="hero__marquee-track">
+        <div className="hero__marquee-track" ref={marqueeRef}>
           {Array.from({ length: 6 }).map((_, i) => (
             <span key={i}>
               <em>React</em>
+              <span className="hero__marquee-sep">✦</span>
+              <em>Next.js</em>
+              <span className="hero__marquee-sep">✦</span>
+               <em>Vite</em>
               <span className="hero__marquee-sep">✦</span>
               <em>Python</em>
               <span className="hero__marquee-sep">✦</span>
