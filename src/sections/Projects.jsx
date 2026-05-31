@@ -36,8 +36,8 @@ problem:
 approach:
 'Started by understanding their recruiting process, target audience, and brand personality. The site was built around clear messaging, professional photography, and simple navigation that guides both employers and job seekers to the information they need.',
 solution:
-'The finished site gives GPP a professional online presence that supports referrals, outreach efforts, and day-to-day business development. It provides visitors with a clear understanding of who they are and what they offer.',
-tags: ['Recruiting', 'Business Website', 'Professional Services'],
+'The finished site gives GPP a professional online presence that supports referrals, outreach efforts, and day-to-day business development. It provides visitors with a clear understanding of who they are and what they offer, without an overly corportate feel.',
+tags: ['Recruiting', 'SEO', 'Professional Services'],
 video: '/Connie-Hero.mov',
 videoPosition: 'center top',
 },
@@ -49,11 +49,11 @@ domain: 'marty-b-solutions.vercel.app',
 role: 'Trades & Services',
 year: '2026',
 description:
-'A straightforward website for a local trades business focused on showcasing completed work and making it easy for customers to get in touch.',
+'A platform that highlights this individuals network as well as showcasing a business with a variety of domains, and making it easy for customers to get in touch with Marty.',
 problem:
 'Most of Marty’s business came through referrals, but potential customers often had no easy way to verify his work or learn about his services before making contact.',
 approach:
-'Built the site around a simple goal: help visitors quickly understand what services are offered and provide a clear path to reach out. Real project photos, concise service descriptions, and prominent contact information became the foundation of the experience.',
+'Built the site around a simple goal: help visitors quickly understand what services are offered and provide a clear path to reach out. Concise service descriptions, and prominent contact information became the foundation of the experience.',
 solution:
 'The website gives referrals a place to learn more about the business before calling and provides a professional online presence that supports future growth.',
 tags: ['Service Business', 'Lead Generation', 'Local Business'],
@@ -70,12 +70,12 @@ year: '2026',
 description:
 'A complete website redesign for a moving company that needed its online presence to better reflect the quality of its services and reputation.',
 problem:
-'The existing website did not effectively communicate the company’s experience, service areas, or customer reviews. Important information was difficult to find and the overall presentation felt outdated.',
+'The existing website did not effectively communicate the company’s experience, service areas, or customer reviews. The overall presentation felt outdated compared to the competitiors in the area.',
 approach:
 'Focused on making the customer journey as straightforward as possible. Service areas, quote requests, customer reviews, and company information were reorganized into a cleaner structure supported by updated visuals and improved usability.',
 solution:
-'The redesign provides a more professional first impression and makes it easier for prospective customers to learn about the company, request a quote, and determine whether Mandel serves their area.',
-tags: ['Local Business', 'Website Redesign', 'Lead Generation'],
+'The redesign provides a more professional first impression and makes it easier for prospective customers to learn about the company, request a quote, and determine whether Mandel serves their area. After the reddesign Mandel Moving has seen around a 400% increase in month over month web traffic and a significant boost in quote requests through the site.',
+tags: ['Local Business', 'Website Redesign', 'SEO'],
 screenshot: '/screenshots/mandel-moving.jpg',
 videoPosition: 'center top',
 },
