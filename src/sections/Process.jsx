@@ -97,11 +97,29 @@ export default function Process() {
           </h2>
         </header>
 
-        <div className="process__rail">
+        {/* Desktop: animated rail */}
+        <div className="process__rail process__desktop-only">
           <div className="process__rail-track" />
           <motion.div className="process__rail-fill" style={{ height: lineFill }} />
           {SKILLS.map((s, i) => (
             <Step key={s.n} step={s} index={i} progress={scrollYProgress} total={SKILLS.length} />
+          ))}
+        </div>
+
+        {/* Mobile: editorial card stack */}
+        <div className="process__mobile-entries process__mobile-only">
+          {SKILLS.map((s) => (
+            <div key={s.n} className="process-entry">
+              <span className="process-entry__ghost display">{s.n}</span>
+              <div className="process-entry__content">
+                <span className="process-entry__tag eyebrow eyebrow--ember">
+                  <span className="eyebrow-dot" />{s.tag}
+                </span>
+                <h3 className="process-entry__title display">{s.title}</h3>
+                <div className="process-entry__rule" />
+                <p className="process-entry__body">{s.body}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

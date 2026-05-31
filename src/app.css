@@ -666,7 +666,22 @@
 
 @media (max-width: 960px) {
   .project { padding: 64px 0; }
-  .project__number { display: none; }
+  .project__number {
+    font-size: clamp(120px, 34vw, 200px);
+    top: 0;
+    left: 0;
+    transform: none;
+    color: var(--ember);
+    opacity: 0.04 !important;
+    font-style: italic;
+    font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+    line-height: 1;
+    z-index: 0;
+  }
+  .project--reverse .project__number {
+    left: auto;
+    right: 0;
+  }
   .project__frame { aspect-ratio: 16 / 10; }
   .project__rule { display: none !important; }
 
@@ -685,6 +700,8 @@
     transform: none !important;
     /* framer-motion uses CSS vars for transforms; zero them out */
     --motion-translateY: 0px !important;
+    position: relative;
+    z-index: 1;
   }
 
   .project__caption,
@@ -1386,7 +1403,6 @@
 
 /* ---------- PROCESS — mobile editorial entries ---------- */
 .process__mobile-entries {
-  display: flex;
   flex-direction: column;
 }
 
