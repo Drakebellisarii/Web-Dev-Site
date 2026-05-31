@@ -147,7 +147,8 @@ export default function Hero() {
               We design and build websites, web apps, and digital brands for businesses
               ready to compete online. Founded by <strong>Drake Bellisari</strong> — B.S.
               Computer Science, Cybersecurity Certificate from{' '}
-              <strong>Trinity College</strong>. Boutique scale. No agency overhead.
+              <strong>Trinity College</strong>. We work closely with every client from the
+              first conversation to launch and long after.
             </p>
             <ul className="hero__signals">
               <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
@@ -191,8 +192,8 @@ export default function Hero() {
             <span className="hero__index-val">Hartford, CT</span>
           </div>
           <div className="hero__index-cell">
-            <span className="eyebrow">Response</span>
-            <span className="hero__index-val">&lt; Taking Clients</span>
+            <span className="eyebrow">Status</span>
+            <span className="hero__index-val">Taking Clients</span>
           </div>
         </motion.div>
       </motion.div>

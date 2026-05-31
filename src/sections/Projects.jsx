@@ -10,10 +10,10 @@ const PROJECTS = [
     role: 'Personal Portfolio',
     year: '2025',
     description:
-      'A living archive of design, code, and writing. Built as a slow-scrolling editorial magazine — each project gets its own spread, its own typography, its own pace.',
-    problem: 'Standard portfolio templates feel generic. I needed a site that communicated craft and taste the moment it loaded — not just a list of links.',
-    approach: 'Designed and built entirely from scratch in Figma then React. Used Framer Motion for scroll-driven animations, Lenis for smooth scrolling, and a custom Fraunces display typeface system to create an editorial magazine feel.',
-    solution: 'A high-performance portfolio with character-by-character name animations, parallax project panels, and a sticky approach section — loading under 1.5s and scoring 95+ on Lighthouse.',
+      'This is the site you\'re looking at. Built as a slow-scrolling editorial magazine where every project gets its own spread, its own type, its own pace. No templates, no shortcuts.',
+    problem: 'Every portfolio on the internet looks like the same portfolio. The goal was something that showed craft the second it loaded, not after clicking through three pages.',
+    approach: 'Started in Figma, finished in React. Framer Motion handles the scroll animations, Lenis keeps everything smooth, and Fraunces does the heavy typographic lifting throughout.',
+    solution: 'Loads under 1.5 seconds and scores 95+ on Lighthouse. The character-by-character title reveal and parallax project panels were the most commented-on details after launch.',
     tags: ['Brand', 'Portfolio', 'Editorial'],
     video: '/Drake-hero.mov',
     videoPosition: 'center center',
@@ -27,10 +27,10 @@ const PROJECTS = [
     role: 'Recruiting Firm',
     year: '2025',
     description:
-      'A composed identity for a boutique recruiting firm. Restrained typography, real-asset photography, and a quiet authority that holds up next to firms ten times the size.',
-    problem: 'GPP had no web presence and was losing candidates and clients to larger firms with more polished digital footprints. They needed to look established without looking corporate.',
-    approach: 'Led discovery sessions to understand their placement niche, then built a brand-first site centered on trust signals: clean typography, professional photography, and direct calls to action for both candidates and hiring managers.',
-    solution: 'A fully responsive marketing site that cut GPP\'s first-impression gap with larger competitors. The site now drives consistent inbound from LinkedIn referrals and ranks for local recruiting keywords.',
+      'GPP is a boutique recruiting firm that was essentially invisible online. Restrained typography, real photography, and the kind of quiet authority that holds up next to firms ten times their size.',
+    problem: 'No web presence meant losing candidates and clients to bigger firms with better-looking sites. They needed to look established without going corporate.',
+    approach: 'Started with a few calls to understand who they place and who they\'re trying to attract. Then built around trust signals: clean type, professional photography, and clear paths for both candidates and hiring managers.',
+    solution: 'The site now drives consistent inbound from LinkedIn referrals and ranks for local recruiting keywords. The first-impression gap with larger competitors is essentially gone.',
     tags: ['Recruiting', 'Identity', 'Marketing site'],
     video: '/Connie-Hero.mov',
     videoPosition: 'center top',
@@ -43,10 +43,10 @@ const PROJECTS = [
     role: 'Trades & Services',
     year: '2025',
     description:
-      'A handshake-on-the-internet site for a one-man trades operation: clear pricing, real photos, a phone number above the fold, and a request form that actually emails him.',
-    problem: 'Marty was getting all his business through word-of-mouth but had no online presence. Referrals were dropping off because prospects couldn\'t verify him before calling.',
-    approach: 'Built for conversion speed above everything else. Phone number and service list above the fold, real job-site photos for credibility, and a single-step contact form that fires directly to his email inbox.',
-    solution: 'A fast, no-friction service site that turned cold referrals into calls. Marty reported a measurable increase in inbound inquiries within the first month of going live.',
+      'Marty runs a one-man trades operation and his work speaks for itself. We made sure strangers on the internet could figure that out without having to cold-call him first.',
+    problem: 'All of his business came through word-of-mouth, but referrals kept falling through because people couldn\'t find him online to verify he was legit before calling.',
+    approach: 'Built around one goal: get someone to call or fill out the form. Phone number above the fold, real job-site photos, a short service list, and a contact form that goes straight to his inbox.',
+    solution: 'Marty saw a measurable jump in inbound inquiries in the first month. Cold referrals that used to go cold now convert because people can see the work before picking up the phone.',
     tags: ['Service biz', 'Lead-gen', 'SEO'],
     video: '/Marty-Hero.mov',
     videoPosition: 'center top',
@@ -59,10 +59,10 @@ const PROJECTS = [
     role: 'Local Moving Co.',
     year: '2025',
     description:
-      'A regional moving company rebuilt around trust signals: instant quote form, route map, fleet photography, and reviews that read like a column in a Sunday paper.',
-    problem: 'The original site was outdated and losing business to newer competitors with slicker online booking flows. Customers were bouncing before requesting a quote.',
-    approach: 'Rebuilt from the ground up with a focus on friction reduction. Instant quote form above the fold, route coverage map, fleet and crew photography, and a review section designed to feel editorial rather than templated.',
-    solution: 'A fully redesigned site that reduced quote form abandonment and increased completed requests. The site now ranks organically for moving-related searches in their service region.',
+      'Mandel had the trucks, the crew, and the reviews. What they didn\'t have was a site that showed any of it. We rebuilt from scratch around the things that actually make someone request a quote.',
+    problem: 'The old site was losing customers before they ever reached the quote form. Newer competitors with cleaner sites were winning on first impression and Mandel had no way to fight back.',
+    approach: 'Put the quote form front and center, added a route map so visitors immediately know if Mandel serves their area, brought in real fleet photography, and gave the reviews section a treatment that doesn\'t look like a generic widget.',
+    solution: 'Quote form completions went up and the site now ranks organically for moving searches in their region, pulling in leads that weren\'t reachable before.',
     tags: ['Local biz', 'Lead capture', 'Quote engine'],
     screenshot: '/screenshots/mandel-moving.jpg',
     videoPosition: 'center top',
@@ -75,22 +75,9 @@ export default function Projects() {
   return (
     <section className="work" id="work" ref={containerRef}>
       <div className="work__header shell">
-        <div className="work__header-eyebrow">
-          <span className="eyebrow eyebrow--ember">
-            <span className="eyebrow-dot" />
-            Selected Works
-          </span>
-          <span className="eyebrow">01 – 04</span>
-        </div>
-        <div className="work__header-title-row">
-          <h2 className="work__title display">
-            Featured <em className="display-italic">Projects</em>.
-          </h2>
-          <p className="work__sub">
-            Complete builds covering strategy, design, development, and deployment.
-            Click any project to visit the live site.
-          </p>
-        </div>
+        <h2 className="work__title display">
+          Featured <em className="display-italic">Projects</em>.
+        </h2>
       </div>
 
       {PROJECTS.map((p, i) => (
