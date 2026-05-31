@@ -21,15 +21,20 @@ export default function Contact() {
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-    const subject = encodeURIComponent(`New inquiry from ${form.name}${form.service ? ` — ${form.service}` : ''}`)
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nService: ${form.service || 'Not specified'}\n\n${form.message}`
-    )
-    window.location.href = `mailto:dpbellisari@gmail.com?subject=${subject}&body=${body}`
-    setTimeout(() => setStatus('sent'), 800)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Send failed')
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -100,9 +105,18 @@ export default function Contact() {
               <div className="contact__sent">
                 <span className="contact__sent-icon">✓</span>
                 <h3 className="display">Message sent.</h3>
-                <p>Your email client should have opened. I'll reply within 48 hours.</p>
+                <p>I'll reply within 48 hours.</p>
                 <button className="contact__sent-reset" onClick={() => { setStatus('idle'); setForm({ name: '', email: '', service: '', message: '' }) }}>
                   Send another
+                </button>
+              </div>
+            ) : status === 'error' ? (
+              <div className="contact__sent">
+                <span className="contact__sent-icon">✗</span>
+                <h3 className="display">Something went wrong.</h3>
+                <p>Please try again or email me directly at dpbellisari@gmail.com.</p>
+                <button className="contact__sent-reset" onClick={() => setStatus('idle')}>
+                  Try again
                 </button>
               </div>
             ) : (
@@ -132,7 +146,7 @@ export default function Contact() {
                 </div>
 
                 <button type="submit" className="contact__submit" disabled={status === 'sending'}>
-                  {status === 'sending' ? 'Opening…' : (
+                  {status === 'sending' ? 'Sending…' : (
                     <>
                       Send message
                       <svg width="16" height="10" viewBox="0 0 16 10" fill="none">

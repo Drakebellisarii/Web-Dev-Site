@@ -6,25 +6,25 @@ const STEPS = [
     n: '01',
     title: 'Listen & Learn',
     tag: 'Discovery',
-    body: 'Every project starts with questions. I want to understand your business, your customers, and what you actually need the site to do before a single pixel moves. That foundation is what separates a site that looks good from one that performs.',
+    body: 'Every project starts with a conversation. I want to understand you first, then your business, your customers, and what you actually need the site to do before a single pixel moves. This foundational relationship is what separates us from our competition and leads to much better end result.',
   },
   {
     n: '02',
     title: 'Design & Build',
     tag: 'Execution',
-    body: 'Once I understand the goal, I translate it into something real. Design rounds in Figma, built in React or Next.js, tested across devices. You see progress early and often — no black boxes, no surprise reveals.',
+    body: 'Once I understand the goal, I translate it into something real. Design mockups come first, then it gets built in React or Next.js, tested across devices. You get access to a live development server throughout the process so you can see real progress in real time — no black boxes, no surprise reveals, no waiting.',
   },
   {
     n: '03',
     title: 'Launch & Grow',
     tag: 'Continuity',
-    body: 'Shipping is not the finish line. I make sure you understand what you have, how to use it, and how to keep it healthy. The goal is a long-term relationship, not a handoff and a goodbye.',
+    body: 'Shipping is not the finish line. I make sure you understand what you have, how to use it, how to analyze its performance, and how to keep it healthy. The goal is a long-term relationship, not a handoff and a goodbye.',
   },
   {
     n: '04',
     title: 'Iterate & Improve',
     tag: 'Longevity',
-    body: 'Great digital products evolve. As your business grows, your site should too. I stay available for updates, new features, and strategic pivots — a partner invested in your continued success, not just the initial build.',
+    body: 'Great digital products evolve. As your business grows, your site should too. I stay available for updates, new features, and strategic pivots we are a true partner invested in your continued success, not just the initial build.',
   },
 ]
 
@@ -65,6 +65,8 @@ export default function Steps() {
               ))}
             </div>
           </div>
+
+          <h2 className="steps__heading display">How I work<em className="display-italic"> with you</em>.</h2>
 
           {/* Continuous progress bar */}
           <div className="steps__progress-track">

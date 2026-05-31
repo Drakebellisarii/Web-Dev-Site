@@ -1183,6 +1183,14 @@
   background: rgba(192,74,24,0.38);
 }
 
+.steps__heading {
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--paper);
+  margin: 0;
+}
+
 /* Continuous scroll progress bar */
 .steps__progress-track {
   width: 100%;
@@ -1215,6 +1223,8 @@
   .steps__banner { padding: 18px 28px 16px; }
 
   .steps__topbar { padding-bottom: 10px; }
+
+  .steps__heading { font-size: clamp(24px, 7vw, 36px); }
 
   /* Stack number above text — single column */
   .steps__content {

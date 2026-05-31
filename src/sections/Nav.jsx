@@ -15,7 +15,7 @@ export default function Nav() {
       <div className="nav__pill">
         <a href="#top" className="nav__monogram" aria-label="Drake Bellisari — home">
           <span className="nav__bracket">[</span>
-          <span className="nav__monogram-letters">DPB</span>
+          <span className="nav__monogram-letters">Drake's Site's</span>
           <span className="nav__bracket">]</span>
         </a>
 
