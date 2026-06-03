@@ -50,12 +50,8 @@ export default function Steps() {
       <div className="steps__sticky">
         <div className="steps__banner shell">
 
-          {/* Top bar: eyebrow + step dots */}
+          {/* Top bar: step dots */}
           <div className="steps__topbar">
-            <span className="eyebrow eyebrow--ember">
-              <span className="eyebrow-dot" />
-              §04 — The Approach
-            </span>
             <div className="steps__dots">
               {STEPS.map((_, i) => (
                 <span

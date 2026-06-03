@@ -27,13 +27,6 @@ export default function Nav() {
           <a href="#approach">Approach</a>
           <a href="#contact">Contact</a>
         </nav>
-
-        <div className="nav__sep" aria-hidden />
-
-        <div className="nav__location">
-          <span className="nav__pulse" aria-hidden />
-          <span>Hartford, CT</span>
-        </div>
       </div>
     </header>
   )

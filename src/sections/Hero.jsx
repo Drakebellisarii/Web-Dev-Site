@@ -57,6 +57,12 @@ export default function Hero() {
 
   useEffect(() => {
     const video = videoRef.current
+    if (!video) return
+    video.play().catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
     if (!video || !window.matchMedia('(max-width: 720px)').matches) return
 
     const CLIP = 6
@@ -102,7 +108,7 @@ export default function Hero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           src="/Web-Dev-Hero.mp4"
           onCanPlay={() => { if (videoRef.current) videoRef.current.playbackRate = 0.5 }}
         />
@@ -111,17 +117,6 @@ export default function Hero() {
       <div className="hero__overlay" />
 
       <motion.div className="hero__content shell" style={{ y: yText, opacity: opacityContent }}>
-        <motion.div
-          className="hero__eyebrow"
-          initial="hidden"
-          animate="show"
-          variants={fadeUp}
-          custom={0}
-        >
-          <span className="eyebrow-dot" />
-          <span className="eyebrow eyebrow--ember">Web Agency · Design &amp; Development</span>
-        </motion.div>
-
         <h1 className="hero__title display">
           <span className="hero__line">
             <CharReveal text="Drake's" baseDelay={0.2} />

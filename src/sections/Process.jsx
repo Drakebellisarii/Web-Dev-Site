@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 const SKILLS = [
@@ -35,6 +35,23 @@ const SKILLS = [
 ]
 
 function FloatingPaths({ position }) {
+  const containerRef = useRef(null)
+  const [visible, setVisible] = useState(false)
+  const reducedMotion = typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useEffect(() => {
+    if (reducedMotion) return
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: '100px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [reducedMotion])
+
   const paths = Array.from({ length: 36 }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${380 - i * 5 * position} -${189 + i * 6} -${312 - i * 5 * position} ${216 - i * 6} ${152 - i * 5 * position} ${343 - i * 6}C${616 - i * 5 * position} ${470 - i * 6} ${684 - i * 5 * position} ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
@@ -42,8 +59,10 @@ function FloatingPaths({ position }) {
     opacity: 0.012 + i * 0.006,
   }))
 
+  if (reducedMotion) return null
+
   return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
       <svg
         style={{ width: '100%', height: '100%' }}
         viewBox="0 0 1400 700"
@@ -58,11 +77,11 @@ function FloatingPaths({ position }) {
             strokeWidth={path.width}
             strokeOpacity={path.opacity}
             initial={{ pathLength: 0.3, opacity: 0.6 }}
-            animate={{
+            animate={visible ? {
               pathLength: 1,
               opacity: [0.3, 0.6, 0.3],
               pathOffset: [0, 1, 0],
-            }}
+            } : false}
             transition={{
               duration: 20 + (path.id % 7) * 3,
               repeat: Infinity,
@@ -87,10 +106,6 @@ export default function Process() {
 
       <div className="shell">
         <header className="process__head">
-          <span className="eyebrow eyebrow--ember">
-            <span className="eyebrow-dot" />
-            §03 — Skills & Stack
-          </span>
           <h2 className="process__title display">
             What I know,<br />
             <em className="display-italic">how I use it</em>.

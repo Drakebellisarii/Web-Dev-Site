@@ -169,6 +169,7 @@
   z-index: 0;
   overflow: hidden;
   transform-origin: center;
+  will-change: transform;
 }
 
 .hero__video {
@@ -195,7 +196,7 @@
   padding-top: 60px;
 }
 
-.hero__eyebrow { margin-bottom: 60px; display: flex; align-items: center; }
+.hero__eyebrow { display: none; }
 
 .hero__title {
   font-size: clamp(64px, 11.5vw, 184px);
@@ -640,6 +641,7 @@
   color: rgba(30, 34, 27, 0.045);
   pointer-events: none;
   z-index: 0;
+  will-change: transform, opacity;
   user-select: none;
   font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 144;
 }
@@ -732,6 +734,7 @@
 
 .project__visual {
   position: relative;
+  will-change: transform;
 }
 
 .project__frame {
@@ -834,6 +837,7 @@
   flex-direction: column;
   gap: 20px;
   max-width: 520px;
+  will-change: transform;
 }
 
 .project__meta {
@@ -1171,7 +1175,7 @@
 
 .steps__topbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding-bottom: 14px;
   margin-bottom: 0;
@@ -1386,7 +1390,7 @@
 
 .process__head { margin-bottom: 80px; max-width: 800px; }
 .process__head .eyebrow { color: var(--ember-glow); }
-.process__title { color: var(--paper); font-size: clamp(48px, 7vw, 96px); margin-top: 28px; }
+.process__title { color: var(--paper); font-size: clamp(48px, 7vw, 96px); }
 
 .process__rail {
   position: relative;
@@ -1674,16 +1678,7 @@
   .contact__step-tag { display: none; }
 }
 
-.contact__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--rule-light);
-  padding-top: 22px;
-  margin-bottom: 60px;
-}
-.contact__head .eyebrow { color: var(--lichen); }
-.contact__head .eyebrow--ember { color: var(--ember-glow); }
+.contact__head { display: none; }
 
 .contact__pulse {
   display: inline-block;

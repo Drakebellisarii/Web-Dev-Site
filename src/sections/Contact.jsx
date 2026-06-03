@@ -41,13 +41,6 @@ export default function Contact() {
     <section className="contact" id="contact" ref={ref}>
       <div className="shell">
 
-        <div className="contact__head">
-          <span className="eyebrow eyebrow--ember">
-            <span className="eyebrow-dot" />
-            §05 — Get In Touch
-          </span>
-        </div>
-
         <h2 className="contact__title display">
           Let's build something<br />
           <em className="display-italic">worth&nbsp;sharing</em>.
