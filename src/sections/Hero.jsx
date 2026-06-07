@@ -66,19 +66,6 @@ function CharReveal({ text, baseDelay = 0, className = '' }) {
 export default function Hero() {
   const ref = useRef(null)
   const videoRef = useRef(null)
-  const marqueeRef = useRef(null)
-
-  useEffect(() => {
-    const track = marqueeRef.current
-    if (!track) return
-    const setShift = () => {
-      const span = track.firstElementChild
-      if (span) track.style.setProperty('--marquee-shift', `-${span.offsetWidth}px`)
-    }
-    setShift()
-    window.addEventListener('resize', setShift)
-    return () => window.removeEventListener('resize', setShift)
-  }, [])
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   // On mobile skip scroll-driven transforms — saves paint/composite work
@@ -272,38 +259,6 @@ export default function Hero() {
         <span className="hero__scroll-line" />
       </motion.div>
 
-      <div className="hero__marquee" aria-hidden>
-        <div className="hero__marquee-track" ref={marqueeRef}>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <span key={i}>
-              <em>React</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Next.js</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Vite</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Python</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>UI/UX</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>SEO</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>AI Integration</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Cybersecurity</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Trinity College · Hartford, CT</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Responsive Design</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Hosting &amp; Maintenance</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Google Analytics</em>
-              <span className="hero__marquee-sep">✦</span>
-            </span>
-          ))}
-        </div>
-      </div>
     </section>
   )
 }
