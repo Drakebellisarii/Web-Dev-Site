@@ -262,6 +262,29 @@
   pointer-events: none;
 }
 
+/* Mobile photo overlay — heavier at top for text legibility,
+   forest-green tint blended in, path/mid section stays visible */
+@media (max-width: 720px) {
+  .hero__overlay {
+    background:
+      /* Strong gradient from top — this is where all text lives */
+      linear-gradient(
+        180deg,
+        rgba(10, 13, 9, 0.82) 0%,
+        rgba(14, 16, 12, 0.60) 30%,
+        rgba(14, 16, 12, 0.30) 55%,
+        rgba(10, 13, 9, 0.70) 100%
+      ),
+      /* Subtle forest-green tint across the whole image */
+      rgba(20, 28, 18, 0.22);
+  }
+}
+
+/* Mobile image: portrait crop, anchored to top so trees fill the frame */
+.hero__video--mobile {
+  object-position: center 20%;
+}
+
 .hero__content {
   position: relative;
   z-index: 2;
@@ -405,6 +428,29 @@
   .hero__intro { max-width: 100%; }
   .hero__video { object-position: center center; }
   .hero__marquee-track { animation-duration: 50s; }
+
+  /* Text legibility over the forest photo */
+  .hero__title {
+    text-shadow:
+      0 2px 24px rgba(0, 0, 0, 0.55),
+      0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+  .hero__lede {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  }
+  .hero__index-val {
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  }
+  /* Signals list slightly brighter on mobile so they read over the image */
+  .hero__signals {
+    color: rgba(239, 232, 216, 0.85);
+  }
+  /* Index cells — subtle border so they read over the photo */
+  .hero__index {
+    border-top-color: rgba(239, 232, 216, 0.30);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
 }
 
 .hero__scroll {

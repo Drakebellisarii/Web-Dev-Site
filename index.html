@@ -27,8 +27,9 @@
     <!-- Preload the font stylesheet so it's fetched immediately -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <!-- Preload hero poster so LCP is instant -->
-    <link rel="preload" as="image" href="/hero-poster.webp" />
+    <!-- Preload hero: mobile gets the photo, desktop gets the video poster -->
+    <link rel="preload" as="image" href="/hero-mobile.webp" media="(max-width: 720px)" />
+    <link rel="preload" as="image" href="/hero-poster.webp" media="(min-width: 721px)" />
     <title>Drake's Sites — Web Design & Development Agency</title>
   </head>
   <body>

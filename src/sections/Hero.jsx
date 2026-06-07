@@ -111,8 +111,8 @@ export default function Hero() {
       >
         {isMobile ? (
           <img
-            className="hero__video"
-            src="/hero-poster.webp"
+            className="hero__video hero__video--mobile"
+            src="/hero-mobile.webp"
             alt=""
             aria-hidden="true"
             fetchpriority="high"
