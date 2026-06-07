@@ -10,10 +10,16 @@ const Process  = lazy(() => import('./sections/Process'))
 const Steps    = lazy(() => import('./sections/Steps'))
 const Contact  = lazy(() => import('./sections/Contact'))
 
+// Touch devices get native momentum scroll — Lenis rAF loop hurts mobile perf
+const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+
 export default function App() {
   useEffect(() => {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     window.scrollTo(0, 0)
+
+    // Skip Lenis entirely on touch/mobile — native scroll is faster
+    if (isTouchDevice) return
 
     const lenis = new Lenis({
       duration: 1.4,

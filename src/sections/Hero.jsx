@@ -1,7 +1,36 @@
 import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
+// Evaluated once at module load — stable, no re-renders
+const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches
+
+// Desktop: per-character Framer Motion reveal (premium feel, GPU-accelerated)
+// Mobile: single CSS animation per word — zero JS animation overhead, same visual
 function CharReveal({ text, baseDelay = 0, className = '' }) {
+  if (isMobile) {
+    return (
+      <span
+        className={className}
+        aria-label={text}
+        style={{
+          display: 'inline-block',
+          overflow: 'hidden',
+          paddingRight: '0.06em',
+          marginRight: '-0.06em',
+        }}
+      >
+        <span
+          style={{
+            display: 'inline-block',
+            animation: `heroSlideUp 0.82s cubic-bezier(0.16,1,0.3,1) ${baseDelay}s both`,
+          }}
+        >
+          {text}
+        </span>
+      </span>
+    )
+  }
+
   return (
     <span
       className={className}
@@ -50,45 +79,21 @@ export default function Hero() {
     window.addEventListener('resize', setShift)
     return () => window.removeEventListener('resize', setShift)
   }, [])
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const yText = useTransform(scrollYProgress, [0, 1], ['0%', '-22%'])
-  const opacityContent = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  // On mobile skip scroll-driven transforms — saves paint/composite work
+  const yText = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '-22%'])
+  const opacityContent = useTransform(scrollYProgress, [0, 0.7], isMobile ? [1, 1] : [1, 0])
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
 
   useEffect(() => {
+    if (isMobile) return
     const video = videoRef.current
     if (!video) return
     video.play().catch(() => {})
   }, [])
 
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video || !window.matchMedia('(max-width: 720px)').matches) return
-
-    const CLIP = 6
-    const getStart = () => Math.max(0, video.duration - CLIP)
-
-    const onLoaded = () => {
-      video.loop = false
-      video.currentTime = getStart()
-    }
-
-    const onEnded = () => {
-      video.currentTime = getStart()
-      video.play()
-    }
-
-    video.addEventListener('loadedmetadata', onLoaded)
-    video.addEventListener('ended', onEnded)
-    if (video.readyState >= 1) onLoaded()
-
-    return () => {
-      video.removeEventListener('loadedmetadata', onLoaded)
-      video.removeEventListener('ended', onEnded)
-      video.loop = true
-    }
-  }, [])
-
+  // Mobile: CSS class animations instead of Framer Motion variants
   const fadeUp = {
     hidden: { y: 28, opacity: 0 },
     show: (i = 0) => ({
@@ -100,19 +105,32 @@ export default function Hero() {
 
   return (
     <section className="hero" id="top" ref={ref}>
-      <motion.div className="hero__video-wrap" style={{ scale: videoScale }}>
-        <video
-          ref={videoRef}
-          className="hero__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/hero-poster.webp"
-          src="/Web-Dev-Hero.mp4"
-          onCanPlay={() => { if (videoRef.current) videoRef.current.playbackRate = 0.5 }}
-        />
+      <motion.div
+        className="hero__video-wrap"
+        style={{ scale: isMobile ? 1 : videoScale }}
+      >
+        {isMobile ? (
+          <img
+            className="hero__video"
+            src="/hero-poster.webp"
+            alt=""
+            aria-hidden="true"
+            fetchpriority="high"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            className="hero__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/hero-poster.webp"
+            src="/Web-Dev-Hero.mp4"
+            onCanPlay={() => { if (videoRef.current) videoRef.current.playbackRate = 0.5 }}
+          />
+        )}
       </motion.div>
 
       <div className="hero__overlay" />
@@ -132,66 +150,117 @@ export default function Hero() {
         </h1>
 
         <div className="hero__base">
-          <motion.div
-            className="hero__intro"
-            initial="hidden"
-            animate="show"
-            variants={fadeUp}
-            custom={4}
-          >
-            <p className="hero__lede">
-              We design and build websites, web apps, and digital brands for businesses
-              ready to compete online. Founded by <strong>Drake Bellisari</strong> — B.S.
-              Computer Science, Cybersecurity Certificate from{' '}
-              <strong>Trinity College</strong>. We work closely with every client from the
-              first conversation to launch and long after.
-            </p>
-            <ul className="hero__signals">
-              <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
-              <li><Cross stroke="var(--ember)" size={10} /> Web Apps &amp; APIs</li>
-              <li><Cross stroke="var(--ember)" size={10} /> SEO &amp; Growth</li>
-              <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
-            </ul>
-          </motion.div>
+          {isMobile ? (
+            // CSS-animated versions for mobile — no Framer Motion instance overhead
+            <>
+              <div className="hero__intro hero__fade-up" style={{ animationDelay: '0.5s' }}>
+                <p className="hero__lede">
+                  We design and build websites, web apps, and digital brands for businesses
+                  ready to compete online. Founded by <strong>Drake Bellisari</strong> — B.S.
+                  Computer Science, Cybersecurity Certificate from{' '}
+                  <strong>Trinity College</strong>. We work closely with every client from the
+                  first conversation to launch and long after.
+                </p>
+                <ul className="hero__signals">
+                  <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> Web Apps &amp; APIs</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> SEO &amp; Growth</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
+                </ul>
+              </div>
+              <div className="hero__cta hero__fade-up" style={{ animationDelay: '0.65s' }}>
+                <a href="#work" className="btn btn--primary">
+                  <span>View Our Work</span>
+                  <ArrowDown />
+                </a>
+                <a href="#contact" className="btn btn--ghost">Start a Project</a>
+              </div>
+            </>
+          ) : (
+            <>
+              <motion.div
+                className="hero__intro"
+                initial="hidden"
+                animate="show"
+                variants={fadeUp}
+                custom={4}
+              >
+                <p className="hero__lede">
+                  We design and build websites, web apps, and digital brands for businesses
+                  ready to compete online. Founded by <strong>Drake Bellisari</strong> — B.S.
+                  Computer Science, Cybersecurity Certificate from{' '}
+                  <strong>Trinity College</strong>. We work closely with every client from the
+                  first conversation to launch and long after.
+                </p>
+                <ul className="hero__signals">
+                  <li><Cross stroke="var(--ember)" size={10} /> Custom Websites</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> Web Apps &amp; APIs</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> SEO &amp; Growth</li>
+                  <li><Cross stroke="var(--ember)" size={10} /> Cybersecurity</li>
+                </ul>
+              </motion.div>
 
-          <motion.div
-            className="hero__cta"
-            initial="hidden"
-            animate="show"
-            variants={fadeUp}
-            custom={5}
-          >
-            <a href="#work" className="btn btn--primary">
-              <span>View Our Work</span>
-              <ArrowDown />
-            </a>
-            <a href="#contact" className="btn btn--ghost">Start a Project</a>
-          </motion.div>
+              <motion.div
+                className="hero__cta"
+                initial="hidden"
+                animate="show"
+                variants={fadeUp}
+                custom={5}
+              >
+                <a href="#work" className="btn btn--primary">
+                  <span>View Our Work</span>
+                  <ArrowDown />
+                </a>
+                <a href="#contact" className="btn btn--ghost">Start a Project</a>
+              </motion.div>
+            </>
+          )}
         </div>
 
-        <motion.div
-          className="hero__index"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 1.2 }}
-        >
-          <div className="hero__index-cell">
-            <span className="eyebrow">Founded by</span>
-            <span className="hero__index-val">Drake Bellisari</span>
+        {isMobile ? (
+          <div className="hero__index hero__fade-up" style={{ animationDelay: '0.8s' }}>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Founded by</span>
+              <span className="hero__index-val">Drake Bellisari</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Credentials</span>
+              <span className="hero__index-val">B.S. CS · Cybersecurity</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Based in</span>
+              <span className="hero__index-val">Hartford, CT</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Status</span>
+              <span className="hero__index-val">Taking Clients</span>
+            </div>
           </div>
-          <div className="hero__index-cell">
-            <span className="eyebrow">Credentials</span>
-            <span className="hero__index-val">B.S. CS · Cybersecurity</span>
-          </div>
-          <div className="hero__index-cell">
-            <span className="eyebrow">Based in</span>
-            <span className="hero__index-val">Hartford, CT</span>
-          </div>
-          <div className="hero__index-cell">
-            <span className="eyebrow">Status</span>
-            <span className="hero__index-val">Taking Clients</span>
-          </div>
-        </motion.div>
+        ) : (
+          <motion.div
+            className="hero__index"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 1.2 }}
+          >
+            <div className="hero__index-cell">
+              <span className="eyebrow">Founded by</span>
+              <span className="hero__index-val">Drake Bellisari</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Credentials</span>
+              <span className="hero__index-val">B.S. CS · Cybersecurity</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Based in</span>
+              <span className="hero__index-val">Hartford, CT</span>
+            </div>
+            <div className="hero__index-cell">
+              <span className="eyebrow">Status</span>
+              <span className="hero__index-val">Taking Clients</span>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
 
       <motion.div
@@ -200,7 +269,6 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
       >
-        
         <span className="hero__scroll-line" />
       </motion.div>
 
@@ -212,7 +280,7 @@ export default function Hero() {
               <span className="hero__marquee-sep">✦</span>
               <em>Next.js</em>
               <span className="hero__marquee-sep">✦</span>
-               <em>Vite</em>
+              <em>Vite</em>
               <span className="hero__marquee-sep">✦</span>
               <em>Python</em>
               <span className="hero__marquee-sep">✦</span>
@@ -220,7 +288,7 @@ export default function Hero() {
               <span className="hero__marquee-sep">✦</span>
               <em>SEO</em>
               <span className="hero__marquee-sep">✦</span>
-              <em>AI integration</em>
+              <em>AI Integration</em>
               <span className="hero__marquee-sep">✦</span>
               <em>Cybersecurity</em>
               <span className="hero__marquee-sep">✦</span>
@@ -228,17 +296,10 @@ export default function Hero() {
               <span className="hero__marquee-sep">✦</span>
               <em>Responsive Design</em>
               <span className="hero__marquee-sep">✦</span>
-              <em>Affordable</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Hosting</em>
-              <span className="hero__marquee-sep">✦</span>
-              <em>Maintenance</em>
+              <em>Hosting &amp; Maintenance</em>
               <span className="hero__marquee-sep">✦</span>
               <em>Google Analytics</em>
               <span className="hero__marquee-sep">✦</span>
-              <em>AIO</em>
-              <span className="hero__marquee-sep">✦</span>
-
             </span>
           ))}
         </div>
