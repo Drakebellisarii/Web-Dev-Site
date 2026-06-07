@@ -7,15 +7,15 @@
 /* ---------- NAV — vertical typographic stack (desktop only) ---------- */
 .nav-vertical {
   position: fixed;
-  top: 50%;
-  right: 32px;
-  transform: translateY(-50%);
+  top: 28px;
+  right: 36px;
   z-index: 50;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0;
   pointer-events: none;
+  padding: 10px 14px;
 }
 
 .nav-vertical__item {
@@ -23,44 +23,48 @@
   font-style: italic;
   font-weight: 350;
   font-variation-settings: "SOFT" 80, "WONK" 1, "opsz" 72;
-  /* Rest state: readable but quiet */
-  font-size: clamp(28px, 3vw, 44px);
+  font-size: 28px;
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--paper);
-  opacity: 0.28;
+  opacity: 0.55;
   pointer-events: all;
   text-decoration: none;
   display: block;
   text-align: right;
-  /* Smooth all properties */
+  padding: 1px 0;
   transition:
-    opacity   0.5s var(--ease-out),
-    font-size 0.5s var(--ease-out),
+    opacity   0.4s var(--ease-out),
+    font-size 0.4s var(--ease-out),
     color     0.4s var(--ease-out),
-    transform 0.5s var(--ease-out);
-  transform-origin: right center;
-  /* Prevent layout shift when scaling — use transform instead */
+    transform 0.4s var(--ease-out);
+  transform-origin: right top;
   will-change: opacity, transform;
-  padding: 3px 0;
 }
 
-/* Hover — slightly more present */
 .nav-vertical__item:hover {
-  opacity: 0.55;
-  transform: translateX(-4px);
+  opacity: 0.9;
+  transform: translateX(-3px);
 }
 
-/* Active section — ember color, larger, fully visible */
+/* Active — ember, larger, fully opaque */
 .nav-vertical__item.is-active {
   color: var(--ember);
   opacity: 1;
-  font-size: clamp(38px, 4.2vw, 62px);
+  font-size: 42px;
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
-  transform: translateX(-6px);
+  transform: translateX(-4px);
 }
 
-/* Hide on mobile — nav-vertical is desktop only */
+/* Work section — light background, flip to dark ink */
+.nav-vertical[data-section="work"] .nav-vertical__item {
+  color: var(--ink);
+}
+.nav-vertical[data-section="work"] .nav-vertical__item.is-active {
+  color: var(--ember);
+}
+
+/* Hide on mobile */
 @media (max-width: 920px) {
   .nav-vertical { display: none; }
 }
@@ -562,6 +566,7 @@
 .work {
   position: relative;
   background: var(--paper-2);
+  color: var(--ink);
   padding: 72px 0 40px;
   border-top: 1px solid var(--rule);
 }
@@ -572,9 +577,11 @@
 }
 
 .work__title {
-  font-size: clamp(40px, 5.5vw, 80px);
+  font-size: clamp(52px, 7vw, 96px);
   margin-bottom: 0;
+  color: var(--char);
 }
+
 
 .project {
   position: relative;

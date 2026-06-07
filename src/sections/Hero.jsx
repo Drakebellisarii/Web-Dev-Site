@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { StardustButton } from '../components/ui/StardustButton'
 
 // Evaluated once at module load — stable, no re-renders
 const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches
@@ -156,11 +157,10 @@ export default function Hero() {
                 </ul>
               </div>
               <div className="hero__cta hero__fade-up" style={{ animationDelay: '0.65s' }}>
-                <a href="#work" className="btn btn--primary">
-                  <span>View Our Work</span>
-                  <ArrowDown />
-                </a>
-                <a href="#contact" className="btn btn--ghost">Start a Project</a>
+                <StardustButton onClick={() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' })}>
+                  View Our Work
+                </StardustButton>
+                <a href="#contact" className="btn btn--primary">Start a Project</a>
               </div>
             </>
           ) : (
@@ -194,36 +194,16 @@ export default function Hero() {
                 variants={fadeUp}
                 custom={5}
               >
-                <a href="#work" className="btn btn--primary">
-                  <span>View Our Work</span>
-                  <ArrowDown />
-                </a>
-                <a href="#contact" className="btn btn--ghost">Start a Project</a>
+                <StardustButton onClick={() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' })}>
+                  View Our Work
+                </StardustButton>
+                <a href="#contact" className="btn btn--primary">Start a Project</a>
               </motion.div>
             </>
           )}
         </div>
 
-        {isMobile ? (
-          <div className="hero__index hero__fade-up" style={{ animationDelay: '0.8s' }}>
-            <div className="hero__index-cell">
-              <span className="eyebrow">Founded by</span>
-              <span className="hero__index-val">Drake Bellisari</span>
-            </div>
-            <div className="hero__index-cell">
-              <span className="eyebrow">Credentials</span>
-              <span className="hero__index-val">B.S. CS · Cybersecurity</span>
-            </div>
-            <div className="hero__index-cell">
-              <span className="eyebrow">Based in</span>
-              <span className="hero__index-val">Hartford, CT</span>
-            </div>
-            <div className="hero__index-cell">
-              <span className="eyebrow">Status</span>
-              <span className="hero__index-val">Taking Clients</span>
-            </div>
-          </div>
-        ) : (
+        {!isMobile && (
           <motion.div
             className="hero__index"
             initial={{ opacity: 0 }}
@@ -271,10 +251,3 @@ function Cross({ stroke = 'currentColor', size = 12 }) {
   )
 }
 
-function ArrowDown() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 1 L7 13 M1 7 L7 13 L13 7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}

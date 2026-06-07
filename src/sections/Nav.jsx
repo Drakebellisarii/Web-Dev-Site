@@ -12,28 +12,27 @@ export default function Nav() {
   const [active, setActive] = useState('top')
 
   useEffect(() => {
-    // Observe each section — whichever crosses the 30% mark from top becomes active
-    const observers = []
+    const getActive = () => {
+      // Find whichever section's top edge is closest to 30% down the viewport
+      const threshold = window.innerHeight * 0.3
 
-    LINKS.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (!el) return
+      let current = LINKS[0].id
+      for (const { id } of LINKS) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const top = el.getBoundingClientRect().top
+        if (top <= threshold) current = id
+      }
+      setActive(current)
+    }
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActive(id)
-        },
-        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
-      )
-      observer.observe(el)
-      observers.push(observer)
-    })
-
-    return () => observers.forEach((o) => o.disconnect())
+    getActive()
+    window.addEventListener('scroll', getActive, { passive: true })
+    return () => window.removeEventListener('scroll', getActive)
   }, [])
 
   return (
-    <nav className="nav-vertical" aria-label="Site navigation">
+    <nav className="nav-vertical" data-section={active} aria-label="Site navigation">
       {LINKS.map(({ href, label, id }) => (
         <a
           key={id}
