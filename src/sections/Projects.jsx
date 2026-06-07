@@ -75,7 +75,7 @@ approach:
 solution:
 'The result is a fast, responsive site that serves as both a portfolio and a professional home base. It gives visitors a clear picture of my technical skills, design approach, and the kinds of projects I enjoy building.',
 tags: ['Portfolio', 'Web Development', 'Personal Brand'],
-image: '/Drake-Hero.png',
+image: '/Drake-Hero.webp',
 videoPosition: 'center center',
 frameRatio: '16 / 9',
 },

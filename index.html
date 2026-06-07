@@ -11,7 +11,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Drake's Sites — Web Design & Development Agency" />
     <meta property="og:description" content="Boutique web agency founded by Drake Bellisari. Custom websites, web apps, and digital brands. Hartford, CT." />
-    <meta property="og:image" content="/Process.JPG" />
+    <meta property="og:image" content="/Process.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -19,11 +19,16 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Drake's Sites — Web Design & Development Agency" />
     <meta name="twitter:description" content="Boutique web agency founded by Drake Bellisari. Custom websites, web apps, and digital brands. Hartford, CT." />
-    <meta name="twitter:image" content="/Process.JPG" />
+    <meta name="twitter:image" content="/Process.webp" />
 
+    <!-- Font preconnect + preload for critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preload the font stylesheet so it's fetched immediately -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Preload hero poster so LCP is instant -->
+    <link rel="preload" as="image" href="/hero-poster.webp" />
     <title>Drake's Sites — Web Design & Development Agency</title>
   </head>
   <body>

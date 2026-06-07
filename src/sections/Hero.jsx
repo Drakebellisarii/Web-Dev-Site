@@ -109,6 +109,7 @@ export default function Hero() {
           loop
           playsInline
           preload="metadata"
+          poster="/hero-poster.webp"
           src="/Web-Dev-Hero.mp4"
           onCanPlay={() => { if (videoRef.current) videoRef.current.playbackRate = 0.5 }}
         />

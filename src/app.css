@@ -142,10 +142,82 @@
   100% { box-shadow: 0 0 0 0 rgba(192,74,24,0); }
 }
 
+/* Hamburger button — hidden on desktop */
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4.5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.nav__burger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: rgba(239, 232, 216, 0.85);
+  border-radius: 999px;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s, width 0.3s;
+  transform-origin: center;
+}
+
+/* X state */
+.nav__burger--open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav__burger--open span:nth-child(2) { opacity: 0; width: 0; }
+.nav__burger--open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Mobile dropdown */
+.nav__mobile-menu {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 49;
+  padding-top: 80px;
+  background: rgba(14, 16, 12, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(239, 232, 216, 0.12);
+  animation: mobileMenuIn 0.28s var(--ease-out);
+}
+
+@keyframes mobileMenuIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav__mobile-links {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 24px 28px;
+  gap: 0;
+}
+
+.nav__mobile-links a {
+  display: block;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(239, 232, 216, 0.08);
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 350;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  transition: color 0.2s, padding-left 0.2s;
+}
+
+.nav__mobile-links a:last-child { border-bottom: none; }
+.nav__mobile-links a:hover { color: var(--ember); padding-left: 8px; }
+
 @media (max-width: 920px) {
   .nav__links { display: none; }
   .nav__location { display: none; }
   .nav__sep { display: none; }
+  .nav__burger { display: flex; }
 }
 
 @media (max-width: 480px) {
@@ -1604,7 +1676,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url('/Process.JPG');
+  background-image: url('/Process.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
