@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { StardustButton } from '../components/ui/StardustButton'
 
 // Evaluated once at module load — stable, no re-renders
 const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 720px)').matches
@@ -157,9 +156,7 @@ export default function Hero() {
                 </ul>
               </div>
               <div className="hero__cta hero__fade-up" style={{ animationDelay: '0.65s' }}>
-                <StardustButton onClick={() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' })}>
-                  View Our Work
-                </StardustButton>
+                <a href="#work" className="btn btn--ghost">View Our Work</a>
                 <a href="#contact" className="btn btn--primary">Start a Project</a>
               </div>
             </>
@@ -194,9 +191,7 @@ export default function Hero() {
                 variants={fadeUp}
                 custom={5}
               >
-                <StardustButton onClick={() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' })}>
-                  View Our Work
-                </StardustButton>
+                <a href="#work" className="btn btn--ghost">View Our Work</a>
                 <a href="#contact" className="btn btn--primary">Start a Project</a>
               </motion.div>
             </>

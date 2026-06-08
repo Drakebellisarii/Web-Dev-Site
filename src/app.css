@@ -914,28 +914,6 @@
   color: var(--ink-2);
 }
 
-.project__link {
-  margin-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink);
-  padding: 14px 0;
-  border-bottom: 1px solid var(--ink);
-  align-self: flex-start;
-  position: relative;
-  transition: color 0.3s, gap 0.3s;
-}
-.project__link:hover {
-  color: var(--ember);
-  gap: 22px;
-}
-.project__link svg { transition: transform 0.3s; }
-.project__link:hover svg { transform: translateX(4px); }
 
 .project__rule {
   margin-top: 80px;
@@ -1574,7 +1552,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.07;
+  opacity: 0.13;
   mix-blend-mode: luminosity;
   pointer-events: none;
   z-index: 0;
@@ -1584,9 +1562,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 80% 30%, rgba(192, 74, 24, 0.22), transparent 50%),
-    radial-gradient(circle at 10% 70%, rgba(74, 90, 63, 0.18), transparent 55%);
+  background: radial-gradient(circle at 10% 70%, rgba(74, 90, 63, 0.18), transparent 55%);
   pointer-events: none;
   z-index: 1;
 }
@@ -1920,11 +1896,11 @@
   color: var(--paper);
   line-height: 1;
   letter-spacing: -0.02em;
-  opacity: 0.92;
+  opacity: 0.75;
 }
 
 .footer__wordmark em {
-  color: var(--ember);
+  color: var(--paper);
   font-style: italic;
 }
 

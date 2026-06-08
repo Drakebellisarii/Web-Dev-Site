@@ -93,7 +93,7 @@ export default function Projects() {
       </div>
 
       {PROJECTS.map((p, i) => (
-        <ProjectPanel key={p.no} project={p} index={i} total={PROJECTS.length} />
+        <ProjectPanel key={p.no} project={p} index={i} />
       ))}
     </section>
   )
@@ -138,7 +138,7 @@ function LazyVideo({ src, style, className, videoPosition }) {
   )
 }
 
-function ProjectPanel({ project, index, total }) {
+function ProjectPanel({ project, index }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
 
@@ -227,22 +227,9 @@ function ProjectPanel({ project, index, total }) {
             </div>
           </div>
 
-          <a className="project__link" href={project.url} target="_blank" rel="noreferrer">
-            <span>Visit {project.domain}</span>
-            <svg width="32" height="12" viewBox="0 0 32 12" fill="none">
-              <path d="M0 6 L30 6 M24 1 L30 6 L24 11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
         </motion.div>
       </div>
 
-      {index < total - 1 && (
-        <div className="project__rule" aria-hidden>
-          <span>{project.no} / {String(total).padStart(2, '0')}</span>
-          <div className="project__rule-line" />
-          <span>{project.domain}</span>
-        </div>
-      )}
     </article>
   )
 }
