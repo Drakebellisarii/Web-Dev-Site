@@ -4,22 +4,23 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 const PROJECTS = [
 {
 no: '01',
-name: 'Marty B Solutions',
-url: 'https://marty-b-solutions.vercel.app',
-domain: 'marty-b-solutions.vercel.app',
-role: 'Trades & Services',
+name: 'Central Florida Automation Services',
+url: 'https://central-florida-alarm.vercel.app',
+domain: 'central-florida-alarm.vercel.app',
+role: 'Smart Home & Security',
 year: '2026',
 description:
-'A platform that highlights this individuals network as well as showcasing a business with a variety of domains, and making it easy for customers to get in touch with Marty.',
+'A full website build for Central Florida\'s premier smart home automation and security integration company — an Atlantic Companies brand serving the luxury residential market since 1968. The site needed to match the sophistication of the systems they install.',
 problem:
-"Most of Marty's business came through referrals, but potential customers often had no easy way to verify his work or learn about his services before making contact.",
+'Despite decades of expertise and a reputation built on trust, CFAS lacked a digital presence that reflected the premium, high-end nature of their work. Prospective clients in luxury communities like Windermere and Winter Park expected a first impression that matched the quality of a whole-home Lutron and Control4 integration.',
 approach:
-'Built the site around a simple goal: help visitors quickly understand what services are offered and provide a clear path to reach out. Concise service descriptions, and prominent contact information became the foundation of the experience.',
+'Designed around the company\'s core philosophy: the systems disappear into the house. The site was built to feel just as invisible and refined — letting the work speak through clean architecture, confident typography, and purposeful restraint. Every section guides visitors from discovery to inquiry without friction.',
 solution:
-'The website gives referrals a place to learn more about the business before calling and provides a professional online presence that supports future growth.',
-tags: ['Service Business', 'Lead Generation', 'Local Business'],
-video: '/Marty-Hero.mp4',
+'The result is a digital flagship that commands the premium positioning CFAS has earned over 55 years in the market. Visitors immediately understand the breadth of services — from smart glass and motorized shades to enterprise networking and fire safety — and are guided naturally toward booking a consultation.',
+tags: ['Smart Home', 'Luxury Residential', 'Full Build'],
+video: '/CFAS-Hero.mp4',
 videoPosition: 'center top',
+frameRatio: '1280 / 598',
 },
 {
 no: '02',
