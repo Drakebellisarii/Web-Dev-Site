@@ -34,8 +34,10 @@
 
   /* Type */
   --display: "Fraunces", "Times New Roman", serif;
-  --body: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+  --body: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif; /* clean sans — wordmark, form inputs */
+  --prose: "Alumni Sans SC", "Inter Tight", sans-serif; /* small-caps — body paragraphs & general text */
   --mono: "JetBrains Mono", ui-monospace, monospace;
+  --dot:  "Doto", "JetBrains Mono", ui-monospace, monospace; /* dot-matrix accent — numerals only */
 
   /* Spacing & motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -56,13 +58,13 @@ html {
 }
 
 body {
-  font-family: var(--body);
+  font-family: var(--prose);
   background: var(--paper);
   color: var(--ink);
   font-weight: 400;
-  font-size: 16px;
-  line-height: 1.55;
-  letter-spacing: -0.005em;
+  font-size: 16.5px;
+  line-height: 1.5;
+  letter-spacing: 0.015em; /* small caps read better with a touch of tracking */
   overflow-x: hidden;
 
 }

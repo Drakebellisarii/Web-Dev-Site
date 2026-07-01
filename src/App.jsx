@@ -6,7 +6,6 @@ import Scrollbar from './components/Scrollbar'
 import './app.css'
 
 const Projects = lazy(() => import('./sections/Projects'))
-const Process  = lazy(() => import('./sections/Process'))
 const Steps    = lazy(() => import('./sections/Steps'))
 const Contact  = lazy(() => import('./sections/Contact'))
 
@@ -48,7 +47,6 @@ export default function App() {
         <Hero />
         <Suspense fallback={null}>
           <Projects />
-          <Process />
           <Steps />
           <Contact />
         </Suspense>

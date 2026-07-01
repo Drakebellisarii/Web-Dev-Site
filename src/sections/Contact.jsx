@@ -48,12 +48,6 @@ export default function Contact() {
 
         <div className="contact__grid">
           <motion.div className="contact__left" style={{ y: yLeft }}>
-            <p className="contact__lede">
-              Have a project in mind? Ready to bring your vision online? Drop me a note
-              and I will get back to you personally within 48 hours. No automated replies,
-              no templated proposals.
-            </p>
-
             <div className="contact__channels">
               <a className="contact__channel" href="mailto:dpbellisari@gmail.com">
                 <span className="contact__channel-icon">
@@ -156,7 +150,7 @@ export default function Contact() {
         <footer className="footer">
           <div className="footer__brand">
             <a href="#top" className="footer__wordmark">
-              Drake <em>Bellisari.</em>
+              drake bellisari<span className="footer__wordmark-dot">.</span>
             </a>
             <span className="eyebrow">© 2026 · Hartford, CT</span>
           </div>
@@ -164,7 +158,6 @@ export default function Contact() {
             <div>
               <span className="eyebrow">Navigation</span>
               <a href="#work">Projects</a>
-              <a href="#skills">Skills</a>
               <a href="#contact">Contact</a>
             </div>
             <div>

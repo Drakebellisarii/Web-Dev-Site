@@ -10,7 +10,7 @@ domain: 'central-florida-alarm.vercel.app',
 role: 'Smart Home & Security',
 year: '2026',
 description:
-'A full website build for Central Florida\'s premier smart home automation and security integration company — an Atlantic Companies brand serving the luxury residential market since 1968. The site needed to match the sophistication of the systems they install.',
+'A full website build for Central Florida\'s premier smart home and security integration company, an Atlantic Companies brand serving the luxury residential market since 1968. The design mirrors the sophistication of the systems they install, using clean architecture and confident typography to guide high-end clients from first impression to a booked consultation.',
 problem:
 'Despite decades of expertise and a reputation built on trust, CFAS lacked a digital presence that reflected the premium, high-end nature of their work. Prospective clients in luxury communities like Windermere and Winter Park expected a first impression that matched the quality of a whole-home Lutron and Control4 integration.',
 approach:
@@ -30,7 +30,7 @@ domain: 'mandelmoving.com',
 role: 'Local Moving Company',
 year: '2026',
 description:
-'A complete website redesign for a moving company that needed its online presence to better reflect the quality of its services and reputation.',
+'A complete redesign for an established local moving company whose online presence no longer reflected the quality of its service. The new site reorganizes service areas, customer reviews, and quote requests into a cleaner, more professional experience, and has driven a major lift in organic traffic and inbound leads since launch.',
 problem:
 "The existing website did not effectively communicate the company's experience, service areas, or customer reviews. The overall presentation felt outdated compared to the competitiors in the area.",
 approach:
@@ -49,7 +49,7 @@ domain: 'gpppartnersgroup.com',
 role: 'Recruiting Firm',
 year: '2025',
 description:
-'GPP Partners Group is a boutique recruiting firm focused on building strong relationships with both candidates and employers. The website was designed to reflect that professionalism while making it easier for visitors to learn about their services.',
+'A new site for a boutique recruiting firm built on close relationships with both candidates and employers. The design reflects that professionalism through clear messaging, professional photography, and simple navigation, helping job seekers and hiring companies alike quickly understand who they are and what they offer.',
 problem:
 'The company had little online presence, making it difficult for potential clients and candidates to learn about the firm before reaching out. They needed a website that established credibility without feeling overly corporate.',
 approach:
@@ -68,7 +68,7 @@ domain: 'drakebellisari.com',
 role: 'Personal Website',
 year: '2025',
 description:
-'My personal website and the place where most people get introduced to my work. It brings together software projects, web design work, professional experience, and a bit about who I am outside of a resume.',
+'My personal site, and where most people first meet my work. It brings together software projects, web design, and professional experience, plus a bit of who I am beyond a resume. Built with React and Framer Motion for a fast, polished feel, every section is designed to make exploring the work effortless.',
 problem:
 'I wanted a single place where recruiters, potential clients, and other developers could quickly understand what I build and how I think. Most portfolios either feel generic or only show finished projects without much context behind them.',
 approach:
@@ -212,22 +212,6 @@ function ProjectPanel({ project, index }) {
               <li key={t}>{t}</li>
             ))}
           </ul>
-
-          <div className="project__case">
-            <div className="project__case-item">
-              <span className="eyebrow project__case-label">Problem</span>
-              <p>{project.problem}</p>
-            </div>
-            <div className="project__case-item">
-              <span className="eyebrow project__case-label">Approach</span>
-              <p>{project.approach}</p>
-            </div>
-            <div className="project__case-item">
-              <span className="eyebrow project__case-label">Outcome</span>
-              <p>{project.solution}</p>
-            </div>
-          </div>
-
         </motion.div>
       </div>
 
