@@ -223,6 +223,102 @@
   100% { box-shadow: 0 0 0 0 rgba(192,74,24,0); }
 }
 
+/* ---------- BOOT — retro Macintosh loading screen ---------- */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--char);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.5s cubic-bezier(0.7, 0, 0.84, 0),
+    opacity 0.18s linear 0.42s;
+}
+
+/* CRT power-off: the frame collapses to a bright scanline, then blinks out */
+.boot--off {
+  transform: scaleY(0.004);
+  opacity: 0;
+}
+
+.boot__core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+
+.boot__mac {
+  color: var(--paper);
+  font-family: var(--mono);
+}
+
+/* System 7 install bar — hairline case, marching diagonal stripes */
+.boot__bar {
+  width: min(240px, 60vw);
+  height: 12px;
+  border: 1px solid var(--paper);
+  padding: 2px;
+}
+.boot__bar-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--paper) 0 4px,
+    transparent 4px 8px
+  );
+  background-size: 12px 12px;
+  animation: boot-march 0.5s linear infinite;
+  transition: width 0.25s linear;
+}
+@keyframes boot-march {
+  to { background-position: 12px 0; }
+}
+
+.boot__label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lichen);
+  margin: 0;
+}
+.boot__cursor {
+  color: var(--ember-glow);
+  animation: boot-blink 1s steps(1) infinite;
+}
+@keyframes boot-blink {
+  50% { opacity: 0; }
+}
+
+/* Dot-matrix readout, bottom-right — the site's numeral voice at full volume */
+.boot__pct {
+  position: absolute;
+  right: clamp(24px, 4vw, 64px);
+  bottom: clamp(16px, 3.5vh, 40px);
+  font-family: var(--dot);
+  font-weight: 700;
+  font-size: clamp(72px, 13vw, 150px);
+  line-height: 1;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.boot__pct-sign {
+  font-size: 0.36em;
+  color: var(--ember);
+  margin-left: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot { transition: opacity 0.3s linear; }
+  .boot--off { transform: none; }
+  .boot__bar-fill { animation: none; }
+  .boot__cursor { animation: none; }
+}
+
 /* ---------- HERO ---------- */
 .hero {
   position: relative;
@@ -270,206 +366,98 @@
   display: block;
 }
 
-/* Subtle top scrim only — keeps the fixed header legible over the video.
-   No hero text to protect, so the rest of the frame stays clear. */
-.hero__overlay {
+/* Parchment print-wash — rises over the film's final frame so the ad type
+   sets on paper, not on raw video. Radial: the Mac stays vivid film in the
+   middle of the page while the margins go full paper, like a photograph
+   printed in the ad. Opacity is scroll-driven from the JSX. */
+.hero__wash {
   position: absolute;
   inset: 0;
   z-index: 1;
+  background: radial-gradient(
+    ellipse 54% 52% at 47% 45%,
+    rgba(239, 232, 216, 0) 32%,
+    rgba(239, 232, 216, 0.6) 58%,
+    var(--paper) 80%
+  );
+  pointer-events: none;
+}
+
+/* Subtle top scrim — keeps the fixed header legible over both the raw film
+   and the washed print frame. Sits above the wash. */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   background: linear-gradient(180deg, rgba(14,16,12,0.5) 0%, rgba(14,16,12,0.12) 16%, transparent 36%);
   pointer-events: none;
 }
 
-.hero__content {
-  position: relative;
-  z-index: 2;
+/* ---- The 1984 print-ad composition, set around the film's last frame ----
+   Headline across the top, justified mini-column on the right, tagline and
+   fine print centered at the bottom — ink on parchment. */
+.hero__ad {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(96px, 13vh, 140px) clamp(24px, 4vw, 64px) clamp(26px, 4vh, 44px);
+  pointer-events: none;
 }
 
-/* Masthead — dateline row above the wordmark */
-.hero__masthead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
+.hero__ad-head {
+  color: var(--ink);
+  font-size: clamp(30px, 4.2vw, 64px);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  max-width: 22ch;
 }
-.hero__dateline {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--lichen);
-  display: inline-flex;
+.hero__ad-head span { display: block; }
+
+.hero__ad-col {
+  position: absolute;
+  top: 27%;
+  right: clamp(24px, 5vw, 72px);
+  width: clamp(200px, 19vw, 260px);
+  font-family: var(--display);
+  font-variation-settings: "SOFT" 0, "WONK" 0, "opsz" 11;
+  font-weight: 460;
+  font-size: 13.5px;
+  line-height: 1.52;
+  color: var(--ink-2);
+  text-align: justify;
+  hyphens: auto;
+}
+.hero__ad-col p { margin: 0; }
+.hero__ad-col p + p { text-indent: 1.6em; }
+
+.hero__ad-foot {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
+  text-align: center;
 }
-.hero__dateline::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ember);
-  flex: none;
-}
-.hero__dateline--end {
-  color: rgba(239, 232, 216, 0.42);
-}
-.hero__dateline--end::before { display: none; }
-
-/* Animated hairline under the masthead */
-.hero__rule {
-  display: block;
-  height: 1px;
-  width: 100%;
-  background: rgba(239, 232, 216, 0.22);
-  transform-origin: left center;
-  margin: 18px 0 clamp(40px, 6vw, 72px);
-}
-
-.hero__title {
-  font-size: clamp(64px, 11.5vw, 184px);
-  margin-bottom: clamp(40px, 6vw, 72px);
-  color: var(--paper);
-}
-.hero__line {
-  display: block;
-  color: var(--paper);
-}
-.hero__ember {
-  color: var(--ember);
-  font-style: italic;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
-}
-
-/* Lower zone — asymmetric: lede + CTA stacked on the left, service index on the right */
-.hero__base {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 36px clamp(40px, 7vw, 110px);
-  align-items: start;
-  margin-bottom: 40px;
-}
-
-/* Desktop: lede (top-left), CTA (under lede), service index spans both rows
-   on the right and is lifted up so it sits higher than the lede — a more
-   composed asymmetry that tucks the index below the wordmark. */
-@media (min-width: 861px) {
-  .hero__lead       { grid-column: 1; grid-row: 1; }
-  .hero__cta-wrap   { grid-column: 1; grid-row: 2; }
-  .hero__services-wrap {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: start;
-    margin-top: clamp(-196px, -12.5vw, -104px);
-  }
-}
-
-@media (max-width: 860px) {
-  .hero__base { grid-template-columns: 1fr; gap: 40px; }
-}
-
-.hero__lead { max-width: 540px; }
-
-.hero__lede {
-  font-size: 18px;
-  line-height: 1.62;
-  color: rgba(239, 232, 216, 0.78);
-  margin-bottom: 0;
-}
-/* Brighten the opening line so the bio leads the eye in */
-.hero__lede::first-line {
-  color: var(--paper);
-}
-.hero__lede strong {
-  font-weight: 500;
-  color: var(--paper);
-  border-bottom: 1px solid var(--ember);
-  padding-bottom: 1px;
-}
-
-.hero__cta {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Service index — large numbered list, no header (the names speak for themselves) */
-.hero__services {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.hero__service {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 18px;
-  align-items: baseline;
-  padding: 16px 6px 16px 0;
-  border-top: 1px solid rgba(239, 232, 216, 0.16);
-  transition: padding-left 0.45s var(--ease-out), border-color 0.45s var(--ease-out);
-}
-.hero__service:last-child { border-bottom: 1px solid rgba(239, 232, 216, 0.16); }
-
-.hero__service-num {
-  grid-column: 1;
-  grid-row: 1;
-  font-family: var(--dot);
-  font-weight: 600;
-  font-size: clamp(24px, 2vw, 32px);
+.hero__ad-tag {
+  color: var(--ink);
+  font-size: clamp(26px, 3.4vw, 52px);
   line-height: 1;
-  color: var(--ember);
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  transition: font-weight 0.4s var(--ease-out);
+  letter-spacing: -0.03em;
+  pointer-events: auto;
+  transition: color 0.35s var(--ease-out);
 }
-
-/* Labels are now in the display serif for editorial contrast against the dots */
-.hero__service-label {
-  grid-column: 2;
-  grid-row: 1;
+.hero__ad-tag:hover { color: var(--ember-deep); }
+.hero__ad-fine {
   font-family: var(--display);
-  font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 120;
-  font-weight: 360;
-  font-size: clamp(28px, 3vw, 46px);
-  line-height: 1;
-  letter-spacing: -0.025em;
-  color: var(--paper);
-  transition: color 0.4s var(--ease-out);
-}
-
-/* One-line descriptor that expands on hover (grid-rows trick — no layout jank) */
-.hero__service-desc {
-  grid-column: 2;
-  grid-row: 2;
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition: grid-template-rows 0.45s var(--ease-out), opacity 0.35s var(--ease-out);
-}
-.hero__service-desc > span {
-  overflow: hidden;
-  min-height: 0;
-  font-size: 12.5px;
-  line-height: 1.45;
-  letter-spacing: 0.03em;
-  color: rgba(239, 232, 216, 0.55);
-}
-
-@media (hover: hover) {
-  .hero__service:hover {
-    padding-left: 14px;
-    border-color: rgba(239, 232, 216, 0.4);
-  }
-  .hero__service:hover .hero__service-num { font-weight: 800; }
-  .hero__service:hover .hero__service-label { color: var(--ember-glow); }
-  .hero__service:hover .hero__service-desc { grid-template-rows: 1fr; opacity: 1; }
-  .hero__service:hover .hero__service-desc > span { padding-top: 7px; }
-}
-
-/* Touch devices have no hover — show the descriptors inline */
-@media (hover: none) {
-  .hero__service-desc { grid-template-rows: 1fr; opacity: 1; }
-  .hero__service-desc > span { padding-top: 6px; }
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 11;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-mute);
+  margin: 0;
 }
 
 .btn {
@@ -512,70 +500,67 @@
 
 @media (max-width: 720px) {
   .hero__sticky { padding: 90px 0 70px; }
-  .hero__masthead { gap: 14px; }
-  .hero__dateline--end { display: none; }
-  .hero__rule { margin: 14px 0 34px; }
-  .hero__title { font-size: clamp(72px, 20vw, 120px); margin-bottom: 36px; }
-  .hero__base { margin-bottom: 0; gap: 38px; }
-  .hero__lead { max-width: 100%; }
   .hero__video { object-position: center center; }
 
-  /* CTA buttons — full width, stacked, pill shape, easy tap targets */
-  .hero__cta {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    width: 100%;
-  }
-  .hero__cta .btn {
-    width: 100%;
-    justify-content: center;
-    border-radius: 999px;
-    padding: 18px 24px;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-  }
-  .hero__cta .btn--primary {
-    background: rgba(192, 74, 24, 0.08);
-    color: var(--ember-glow);
-    border-color: var(--ember);
-  }
-  .hero__cta .btn--ghost {
-    background: rgba(239, 232, 216, 0.12);
-    border-color: rgba(239, 232, 216, 0.45);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+  /* The mini-column is a print conceit — too much type over a phone frame */
+  .hero__ad-col { display: none; }
+
+  /* Portrait crop shows a tall sliver of film — widen the paper window so
+     it reads as a printed photo band, not a keyhole vignette */
+  .hero__wash {
+    background: radial-gradient(
+      ellipse 95% 32% at 50% 42%,
+      rgba(239, 232, 216, 0) 38%,
+      rgba(239, 232, 216, 0.65) 68%,
+      var(--paper) 90%
+    );
   }
 
-  /* Text legibility over the forest photo */
-  .hero__title {
-    text-shadow:
-      0 2px 24px rgba(0, 0, 0, 0.55),
-      0 1px 4px rgba(0, 0, 0, 0.35);
+  .hero__ad {
+    padding: 96px 24px 30px;
   }
-  .hero__lede {
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+  .hero__ad-head {
+    font-size: clamp(30px, 9vw, 44px);
+    max-width: 100%;
   }
-  .hero__service-label,
-  .hero__dateline {
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Service index — roomier and more legible on mobile */
-  .hero__service {
-    padding: 16px 2px;
-    column-gap: 16px;
-    border-top-color: rgba(239, 232, 216, 0.22);
-  }
-  .hero__service:last-child {
-    border-bottom-color: rgba(239, 232, 216, 0.22);
-  }
-  .hero__service-num { font-size: 24px; }
-  .hero__service-label { font-size: 30px; }
-  .hero__service-desc > span { color: rgba(239, 232, 216, 0.6); }
+  .hero__ad-tag { font-size: clamp(28px, 8vw, 40px); }
 }
 
 /* marquee removed */
+
+/* ---------- ABOUT — animated portrait ---------- */
+/* Background mirrors the film's own studio gradient (sampled: #b9b9b6 top →
+   #dedad7 bottom) so the video frame has nothing to stand out against */
+.about {
+  background: linear-gradient(180deg, #b8b8b5 0%, #cfcdca 62%, #e0dcd8 100%);
+  padding: 88px 0 64px;
+}
+
+.about__head {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.about__stage {
+  display: flex;
+  justify-content: center;
+}
+
+.about__video {
+  display: block;
+  width: min(480px, 86vw);
+  /* Feather every edge so the rectangle dissolves into the section */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent),
+    linear-gradient(to bottom, transparent, #000 8%, #000 94%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent),
+    linear-gradient(to bottom, transparent, #000 8%, #000 94%, transparent);
+  mask-composite: intersect;
+}
+
+@media (max-width: 720px) {
+  .about { padding: 64px 0 48px; }
+}
 
 /* ---------- MANIFESTO ---------- */
 .manifesto {

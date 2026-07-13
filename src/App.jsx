@@ -1,8 +1,9 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import Lenis from 'lenis'
 import Nav from './sections/Nav'
 import Hero from './sections/Hero'
 import Scrollbar from './components/Scrollbar'
+import Boot from './components/Boot'
 import './app.css'
 
 const Projects = lazy(() => import('./sections/Projects'))
@@ -13,6 +14,12 @@ const Contact  = lazy(() => import('./sections/Contact'))
 const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
 
 export default function App() {
+  // Boot gates the site: content mounts once assets are in (so the hero film
+  // never double-downloads), and the overlay unmounts after its CRT-off exit
+  const [entered, setEntered] = useState(false)
+  const [showBoot, setShowBoot] = useState(true)
+  const [heroSrc, setHeroSrc] = useState(null)
+
   useEffect(() => {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     window.scrollTo(0, 0)
@@ -28,7 +35,15 @@ export default function App() {
       touchMultiplier: 1.4,
     })
 
-    lenis.on('scroll', () => window.dispatchEvent(new Event('scroll')))
+    // Re-entry guard: Lenis also hears the synthetic event and re-emits,
+    // which recurses until the stack overflows and starves other listeners
+    let bridging = false
+    lenis.on('scroll', () => {
+      if (bridging) return
+      bridging = true
+      window.dispatchEvent(new Event('scroll'))
+      bridging = false
+    })
 
     function raf(time) {
       lenis.raf(time)
@@ -41,16 +56,29 @@ export default function App() {
 
   return (
     <div className="app">
-      <Scrollbar />
-      <Nav />
-      <main>
-        <Hero />
-        <Suspense fallback={null}>
-          <Projects />
-          <Steps />
-          <Contact />
-        </Suspense>
-      </main>
+      {showBoot && (
+        <Boot
+          onReady={(src) => {
+            setHeroSrc(src)
+            setEntered(true)
+          }}
+          onGone={() => setShowBoot(false)}
+        />
+      )}
+      {entered && (
+        <>
+          <Scrollbar />
+          <Nav />
+          <main>
+            <Hero src={heroSrc} />
+            <Suspense fallback={null}>
+              <Projects />
+              <Steps />
+              <Contact />
+            </Suspense>
+          </main>
+        </>
+      )}
     </div>
   )
 }

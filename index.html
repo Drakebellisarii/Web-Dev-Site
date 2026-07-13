@@ -27,9 +27,8 @@
     <!-- Preload the font stylesheet so it's fetched immediately -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,300..700;1,300..700&family=Doto:wght@400..900&family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,300..700;1,300..700&family=Doto:wght@400..900&family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <!-- Preload hero: mobile gets the photo, desktop gets the video poster -->
-    <link rel="preload" as="image" href="/hero-mobile.webp" media="(max-width: 720px)" />
-    <link rel="preload" as="image" href="/hero-poster.webp" media="(min-width: 721px)" />
+    <!-- Hero film is fetched (with progress) by the boot screen — no preload
+         hint here, it would double-download alongside the boot's streamed fetch -->
     <title>Drake's Sites — Web Design & Development Agency</title>
   </head>
   <body>
