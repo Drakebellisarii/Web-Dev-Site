@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
 
 const LINKS = [
-  { href: '#work',     label: 'work',     id: 'work' },
-  { href: '#approach', label: 'approach', id: 'approach' },
-  { href: '#contact',  label: 'contact',  id: 'contact' },
+  { href: '#about',   label: 'about',   id: 'about' },
+  { href: '#work',    label: 'work',    id: 'work' },
+  { href: '#contact', label: 'contact', id: 'contact' },
 ]
 
-// Sections rendered on a light background — header text flips to dark ink over these
-const LIGHT_SECTIONS = new Set(['work'])
+// Every section the theme-detector watches — a superset of the nav LINKS,
+// since sections without a nav item (About) still flip the header color
+const THEME_IDS = ['about', 'work', 'contact']
+
+// Sections rendered on a light background — header text flips to dark ink
+// over these. The whole site past the hero is paper-toned now, so this is
+// everything except the hero's own dark video/wash opening.
+const LIGHT_SECTIONS = new Set(['about', 'work', 'contact'])
 
 export default function Nav() {
   const [active, setActive] = useState('top')
@@ -19,7 +25,7 @@ export default function Nav() {
       // Active section: whichever top edge is closest to 30% down the viewport
       const threshold = window.innerHeight * 0.3
       let current = 'top'
-      for (const { id } of LINKS) {
+      for (const id of THEME_IDS) {
         const el = document.getElementById(id)
         if (!el) continue
         if (el.getBoundingClientRect().top <= threshold) current = id
@@ -48,7 +54,7 @@ export default function Nav() {
     >
       <div className="site-header__bar shell">
         <a href="#top" className="site-header__logo" onClick={() => setOpen(false)}>
-          drake bellisari<span className="site-header__logo-dot">;</span>
+          DrakeSites<span className="site-header__logo-dot">.</span>
         </a>
 
         <nav className="site-header__nav" aria-label="Primary">

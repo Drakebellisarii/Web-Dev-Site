@@ -1,40 +1,85 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import {
   motion,
   useScroll,
-  useTransform,
   useMotionValue,
   useMotionValueEvent,
   transform,
 } from 'framer-motion'
 
 // Desktop / laptop and larger — gets the scroll-scrubbed video hero.
-// Smaller screens autoplay the film once and hold on its final frame.
+// Smaller screens get the same "scroll to start it" film, just not scrubbed
+// frame-by-frame (no 300vh pin track on mobile — perf).
 const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 861px)').matches
 
 const EASE = [0.16, 1, 0.3, 1]
 
-// Mobile has no scrub — the ad type just sets itself after the film starts
-const enter = (delay) =>
-  isDesktop
-    ? {}
-    : {
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.9, delay, ease: EASE },
-      }
+const LINE1 = 'My name is Drake Bellisari'
+const LINE1_WORDS = LINE1.split(' ')
+
+// Second line is its own little typewriter — "and I " stays put, the verb
+// cycles design → develop → ship (typed, held, deleted), and once "ship"
+// lands the tail types in and everything stops there for good.
+const LINE2_PREFIX = 'I '
+const LINE2_VERBS = ['design', 'develop', 'ship']
+const LINE2_SUFFIX = ' premium software.'
+const LINE2_FULL = `${LINE2_PREFIX}${LINE2_VERBS[LINE2_VERBS.length - 1]}${LINE2_SUFFIX}`
+
+function buildLine2Script() {
+  const steps = [{ type: 'type', text: LINE2_PREFIX, delay: 42 }]
+  LINE2_VERBS.forEach((verb, i) => {
+    steps.push({ type: 'type', text: verb, delay: 58 })
+    if (i < LINE2_VERBS.length - 1) {
+      steps.push({ type: 'pause', ms: 620 })
+      steps.push({ type: 'delete', count: verb.length, delay: 32 })
+    }
+  })
+  steps.push({ type: 'type', text: LINE2_SUFFIX, delay: 42 })
+  return steps
+}
+
+// Desktop scrubs line 2 against scroll, so the whole type-hold-delete cycle
+// is precomputed as a flat list of frames — one displayed string per scroll
+// notch. Scrolling fast just plays the frames fast; nothing can be skipped
+// past unseen, and scrolling back up literally rewinds the typing.
+const LINE2_HOLD_FRAMES = 10
+function buildLine2Frames() {
+  const frames = ['']
+  let text = ''
+  for (const ch of LINE2_PREFIX) { text += ch; frames.push(text) }
+  LINE2_VERBS.forEach((verb, i) => {
+    for (const ch of verb) { text += ch; frames.push(text) }
+    if (i < LINE2_VERBS.length - 1) {
+      for (let k = 0; k < LINE2_HOLD_FRAMES; k++) frames.push(text)
+      for (let k = 0; k < verb.length; k++) { text = text.slice(0, -1); frames.push(text) }
+    }
+  })
+  for (const ch of LINE2_SUFFIX) { text += ch; frames.push(text) }
+  return frames
+}
+const LINE2_FRAMES = buildLine2Frames()
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // `src` is normally a blob URL handed over by the Boot screen (already fully
 // downloaded); the plain path is the fallback if boot fetching failed.
 export default function Hero({ src = '/Hero-inspo.mp4' }) {
   const ref = useRef(null)
   const videoRef = useRef(null)
+  const wordsShownRef = useRef(0)
+  const line2FrameRef = useRef(0)
+  const line2StartedRef = useRef(false)
+
+  const [revealed, setRevealed] = useState(false)
+  const [wordsShown, setWordsShown] = useState(0)
+  const [line2Active, setLine2Active] = useState(false)
+  const [line2Text, setLine2Text] = useState('')
 
   // Progress runs across the whole tall section while the inner pins
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
 
   // The film finishes early; the remaining scroll "typesets" the print ad
-  // around its last frame — wash, headline, column, tagline, in that order.
+  // around its last frame — wash, headline (typed word by word), tagline.
   const V_END = 0.62
 
   // Imperative motion values, NOT useTransform(scrollYProgress, ...) —
@@ -44,35 +89,129 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
   // stay on the reliable JS path.
   const washOpacity = useMotionValue(0)
   const headOpacity = useMotionValue(0)
-  const headY = useMotionValue(28)
-  const colOpacity = useMotionValue(0)
-  const colY = useMotionValue(24)
+  const headY = useMotionValue(20)
   const tagOpacity = useMotionValue(0)
   const tagY = useMotionValue(18)
 
   useMotionValueEvent(scrollYProgress, 'change', (p) => {
     washOpacity.set(transform(p, [0.6, 0.74], [0, 1]))
-    headOpacity.set(transform(p, [0.64, 0.74], [0, 1]))
-    headY.set(transform(p, [0.64, 0.74], [28, 0]))
-    colOpacity.set(transform(p, [0.72, 0.82], [0, 1]))
-    colY.set(transform(p, [0.72, 0.82], [24, 0]))
-    tagOpacity.set(transform(p, [0.8, 0.9], [0, 1]))
-    tagY.set(transform(p, [0.8, 0.9], [18, 0]))
+    headOpacity.set(transform(p, [0.66, 0.72], [0, 1]))
+    headY.set(transform(p, [0.66, 0.72], [20, 0]))
+    tagOpacity.set(transform(p, [0.9, 0.99], [0, 1]))
+    tagY.set(transform(p, [0.9, 0.99], [18, 0]))
+
+    if (!isDesktop) return
+    const typeP = transform(p, [0.68, 0.84], [0, 1])
+    const words = Math.round(LINE1_WORDS.length * Math.max(0, Math.min(1, typeP)))
+    if (words !== wordsShownRef.current) {
+      wordsShownRef.current = words
+      setWordsShown(words)
+    }
+
+    // Line 2 scrubs right behind line 1 — the design/develop/ship cycle is
+    // just frames indexed by scroll position, so it can't be blown past.
+    const frame = Math.round(transform(p, [0.84, 0.99], [0, LINE2_FRAMES.length - 1]))
+    if (frame !== line2FrameRef.current) {
+      line2FrameRef.current = frame
+      setLine2Text(LINE2_FRAMES[frame])
+    }
   })
 
-  // Don't let the invisible tagline swallow clicks before it has set
-  const tagPointer = useTransform(tagOpacity, (v) => (v > 0.2 ? 'auto' : 'none'))
+  // Mobile only: the headline types on a timer (no scrub track there), so
+  // once it finishes, hand off to line 2's own one-shot type-and-delete run.
+  useEffect(() => {
+    if (isDesktop) return
+    if (wordsShown >= LINE1_WORDS.length && !line2StartedRef.current) {
+      line2StartedRef.current = true
+      setLine2Active(true)
+    }
+  }, [wordsShown])
 
+  useEffect(() => {
+    if (!line2Active) return
+    let cancelled = false
+
+    const run = async () => {
+      let text = ''
+      for (const step of buildLine2Script()) {
+        if (cancelled) return
+        if (step.type === 'type') {
+          for (const ch of step.text) {
+            if (cancelled) return
+            text += ch
+            setLine2Text(text)
+            await wait(step.delay)
+          }
+        } else if (step.type === 'delete') {
+          for (let i = 0; i < step.count; i++) {
+            if (cancelled) return
+            text = text.slice(0, -1)
+            setLine2Text(text)
+            await wait(step.delay)
+          }
+        } else if (step.type === 'pause') {
+          await wait(step.ms)
+        }
+      }
+    }
+    run()
+
+    return () => { cancelled = true }
+  }, [line2Active])
+
+  const line2Done = line2Text === LINE2_FULL
+
+  // Mobile only: hold the visitor here until the timed sequence finishes.
+  // Desktop needs no lock anymore — both lines are scroll-scrubbed there,
+  // so the scroll gesture *is* the animation and nothing can be missed.
+  // Only forward motion is blocked — scrolling back up stays free.
+  useEffect(() => {
+    if (isDesktop) return
+    const shouldLock = revealed && !line2Done
+    if (!shouldLock) return
+
+    let touchStartY = 0
+
+    const onWheel = (e) => {
+      if (e.deltaY > 0) e.preventDefault()
+    }
+    const onTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY
+    }
+    const onTouchMove = (e) => {
+      if (touchStartY - e.touches[0].clientY > 0) e.preventDefault()
+    }
+    const onKeyDown = (e) => {
+      if (['ArrowDown', 'PageDown', ' ', 'End'].includes(e.key)) e.preventDefault()
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [line2Done, revealed])
+
+  // Desktop: scrub the film frame-by-frame against scroll progress.
   useEffect(() => {
     if (!isDesktop) return
     const v = videoRef.current
     if (!v) return
 
-    // Prime decoding so seeked frames actually paint (Safari/Chrome quirk)
+    // Prime decoding so seeked frames actually paint (Safari/Chrome quirk).
+    // Pause is called synchronously, NOT inside the play() promise's .then
+    // — awaiting the promise lets the film actually run for a visible beat
+    // before it stops, which reads as autoplay. Firing pause() in the same
+    // tick cancels playback before the browser paints a moving frame.
     v.muted = true
-    const pr = v.play()
-    if (pr && pr.then) pr.then(() => v.pause()).catch(() => {})
-    else v.pause()
+    v.play().catch(() => {})
+    v.pause()
 
     let raf = 0
     const scrub = (p) => {
@@ -95,29 +234,47 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
     }
   }, [scrollYProgress])
 
+  // Mobile/tablet: nothing plays until the visitor actually scrolls — no
+  // scrub track here, so this is a one-shot play() plus a timed word-by-
+  // word type-on of the headline. Line 2's cycle picks up automatically
+  // once wordsShown reaches the end (same effect as the desktop path).
+  useEffect(() => {
+    if (isDesktop) return
+    const v = videoRef.current
+    if (!v) return
+
+    let done = false
+    const start = () => {
+      if (done) return
+      done = true
+      v.play().catch(() => {})
+      setRevealed(true)
+      let i = 0
+      const id = setInterval(() => {
+        i += 1
+        setWordsShown(Math.min(i, LINE1_WORDS.length))
+        if (i >= LINE1_WORDS.length) clearInterval(id)
+      }, 160)
+      window.removeEventListener('scroll', start)
+    }
+    window.addEventListener('scroll', start, { passive: true })
+    return () => window.removeEventListener('scroll', start)
+  }, [])
+
+  const line1Shown = LINE1_WORDS.slice(0, Math.min(wordsShown, LINE1_WORDS.length)).join(' ')
+
   return (
     <section className="hero" id="top" ref={ref}>
       <div className="hero__sticky">
         <div className="hero__video-wrap">
-          {isDesktop ? (
-            <video
-              ref={videoRef}
-              className="hero__video"
-              muted
-              playsInline
-              preload="auto"
-              src={src}
-            />
-          ) : (
-            <video
-              className="hero__video"
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              src={src}
-            />
-          )}
+          <video
+            ref={videoRef}
+            className="hero__video"
+            muted
+            playsInline
+            preload="auto"
+            src={src}
+          />
         </div>
 
         {/* Parchment wash — the film frame becomes the printed page */}
@@ -128,47 +285,42 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
         <div className="hero__overlay" />
 
         <div className="hero__ad">
-          <motion.h1
-            className="hero__ad-head display"
-            style={isDesktop ? { opacity: headOpacity, y: headY } : undefined}
-            {...enter(0.5)}
-          >
-            <span>My name is Drake&nbsp;Bellisari</span>
-            <span>and I build premium software.</span>
-          </motion.h1>
+          <div className="hero__ad-head-group">
+            <motion.h1
+              className="hero__ad-head display"
+              style={isDesktop ? { opacity: headOpacity, y: headY } : undefined}
+              initial={isDesktop ? undefined : { opacity: 0, y: 20 }}
+              animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
+              transition={isDesktop ? undefined : { duration: 0.6, ease: EASE }}
+              aria-label={`${LINE1} ${LINE2_FULL}`}
+            >
+              <span aria-hidden="true">{line1Shown}</span>
+            </motion.h1>
 
-          <motion.div
-            className="hero__ad-col"
-            style={isDesktop ? { opacity: colOpacity, y: colY } : undefined}
-            {...enter(0.9)}
-          >
-            <p>
-              All along, the promise of good software has been the same: it should feel
-              obvious the moment you touch it.
-            </p>
-            <p>
-              I design and build websites and web apps for small businesses and founders
-              — work that looks composed, loads fast, and earns trust before it asks for
-              anything.
-            </p>
-            <p>Every typeface, every animation, every line of copy is put there on purpose.</p>
-            <p>
-              Because the hard part of premium software isn&rsquo;t imagining it. The hard
-              part is shipping it.
-            </p>
-          </motion.div>
+            {/* Second line — desktop pulls this down to the bottom-right
+                corner of the section; mobile keeps it stacked under the
+                first line. Same plain display font as the first line, just
+                ember-toned, with its own design/develop/ship type-cycle. */}
+            <motion.p
+              className="hero__ad-line2 display"
+              style={isDesktop ? { opacity: headOpacity, y: headY } : undefined}
+              initial={isDesktop ? undefined : { opacity: 0, y: 20 }}
+              animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
+              transition={isDesktop ? undefined : { duration: 0.6, ease: EASE }}
+              aria-hidden="true"
+            >
+              {line2Text}
+              {(line2Active || line2Text.length > 0) && !line2Done && <span className="hero__ad-line2-cursor" />}
+            </motion.p>
+          </div>
 
           <motion.div
             className="hero__ad-foot"
-            style={isDesktop ? { opacity: tagOpacity, y: tagY, pointerEvents: tagPointer } : undefined}
-            {...enter(1.3)}
+            style={isDesktop ? { opacity: tagOpacity, y: tagY } : undefined}
+            initial={isDesktop ? undefined : { opacity: 0, y: 18 }}
+            animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 18 }}
+            transition={isDesktop ? undefined : { duration: 0.7, delay: 0.15, ease: EASE }}
           >
-            <a href="#contact" className="hero__ad-tag display">
-              Start a project.
-            </a>
-            <p className="hero__ad-fine">
-              &copy; 2026 Drake Bellisari &middot; Hartford, CT &middot; Columbus, OH
-            </p>
           </motion.div>
         </div>
       </div>

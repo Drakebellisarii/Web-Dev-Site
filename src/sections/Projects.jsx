@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import BrowserFrame from '../components/BrowserFrame'
 
 const PROJECTS = [
 {
@@ -144,8 +145,6 @@ function ProjectPanel({ project, index }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
 
   const imageY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
-  const numberX = useTransform(scrollYProgress, [0, 1], ['-30%', '30%'])
-  const numberOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
   const captionY = useTransform(scrollYProgress, [0, 1], ['30px', '-30px'])
   const reverse = index % 2 === 1
 
@@ -155,47 +154,28 @@ function ProjectPanel({ project, index }) {
       className={`project ${reverse ? 'project--reverse' : ''}`}
       data-index={project.no}
     >
-      <motion.div
-        className="project__number display"
-        style={{ x: numberX, opacity: numberOpacity }}
-        aria-hidden
-      >
-        {project.no}
-      </motion.div>
-
       <div className="project__inner shell">
         <motion.div className="project__visual" style={{ y: imageY }}>
-          <div className="project__frame" style={project.frameRatio ? { aspectRatio: project.frameRatio } : undefined}>
-            {project.video ? (
-              <LazyVideo
-                src={project.video}
-                className="project__screenshot"
-                videoPosition={project.videoPosition}
-              />
-            ) : (
-              <img
-                src={project.image || project.screenshot}
-                alt={`${project.name} website`}
-                className="project__screenshot"
-                style={{ objectPosition: project.videoPosition }}
-                loading="lazy"
-              />
-            )}
-            <div className="project__frame-overlay">
-              <span className="eyebrow">{project.domain}</span>
-              <span className="project__visit">
-                Live — visit
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                  <path d="M2 9 L9 2 M3 2 L9 2 L9 8" stroke="currentColor" strokeWidth="1.2" />
-                </svg>
-              </span>
+          <BrowserFrame url={project.domain} className="project__frame">
+            <div className="project__media" style={project.frameRatio ? { aspectRatio: project.frameRatio } : undefined}>
+              {project.video ? (
+                <LazyVideo
+                  src={project.video}
+                  className="project__screenshot"
+                  videoPosition={project.videoPosition}
+                />
+              ) : (
+                <img
+                  src={project.image || project.screenshot}
+                  alt={`${project.name} website`}
+                  className="project__screenshot"
+                  style={{ objectPosition: project.videoPosition }}
+                  loading="lazy"
+                />
+              )}
             </div>
-            <span className="project__badge">
-              <span className="project__badge-dot" />
-              Live
-            </span>
             <a className="project__cover-link" href={project.url} target="_blank" rel="noreferrer" aria-label={`Visit ${project.name}`} />
-          </div>
+          </BrowserFrame>
         </motion.div>
 
         <motion.div className="project__caption" style={{ y: captionY }}>

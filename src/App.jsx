@@ -6,8 +6,8 @@ import Scrollbar from './components/Scrollbar'
 import Boot from './components/Boot'
 import './app.css'
 
+const About    = lazy(() => import('./sections/About'))
 const Projects = lazy(() => import('./sections/Projects'))
-const Steps    = lazy(() => import('./sections/Steps'))
 const Contact  = lazy(() => import('./sections/Contact'))
 
 // Touch devices get native momentum scroll — Lenis rAF loop hurts mobile perf
@@ -72,8 +72,8 @@ export default function App() {
           <main>
             <Hero src={heroSrc} />
             <Suspense fallback={null}>
+              <About />
               <Projects />
-              <Steps />
               <Contact />
             </Suspense>
           </main>

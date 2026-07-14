@@ -2,6 +2,18 @@
    DPBellisari WebDev — Editorial Forest Design System
    ================================================================ */
 
+/* Torrance — a genuine period Apple system-font recreation (Kreative
+   Software ReLay Fonts). This is the site's "machine voice": every eyebrow,
+   button, nav link, and piece of UI chrome that used to borrow a generic
+   programming mono now speaks in an actual Apple face instead. */
+@font-face {
+  font-family: "Torrance";
+  src: url("/torrance/Torrance.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Surfaces — warm parchment to deep forest */
   --paper: #efe8d8;
@@ -33,10 +45,10 @@
   --rule-light: rgba(239, 232, 216, 0.18);
 
   /* Type */
-  --display: "Fraunces", "Times New Roman", serif;
+  --display: "Gowun Batang", "Batang", "Times New Roman", serif;
   --body: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif; /* clean sans — wordmark, form inputs */
   --prose: "Alumni Sans SC", "Inter Tight", sans-serif; /* small-caps — body paragraphs & general text */
-  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --mono: "Torrance", "JetBrains Mono", ui-monospace, monospace;
   --dot:  "Doto", "JetBrains Mono", ui-monospace, monospace; /* dot-matrix accent — numerals only */
 
   /* Spacing & motion */
@@ -84,6 +96,19 @@ html { scrollbar-width: none; }
   color: var(--paper);
 }
 
+/* Visually hidden but present for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Subtle paper grain overlay */
 body::before {
   content: "";
@@ -123,16 +148,14 @@ body::before {
 
 .display {
   font-family: var(--display);
-  font-weight: 350;
-  font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 144;
-  letter-spacing: -0.035em;
-  line-height: 0.92;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
   color: var(--ink);
 }
 
 .display-italic {
   font-style: italic;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
 }
 
 a {

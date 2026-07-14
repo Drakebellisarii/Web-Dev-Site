@@ -140,7 +140,7 @@ export default function Boot({ onReady, onGone }) {
         </div>
 
         <p className="boot__label" aria-hidden>
-          loading the good part<span className="boot__cursor">_</span>
+          Crafting your Experience<span className="boot__cursor">_</span>
         </p>
       </div>
 
