@@ -12,9 +12,9 @@ const LINKS = [
 const THEME_IDS = ['about', 'work', 'contact']
 
 // Sections rendered on a light background — header text flips to dark ink
-// over these. The whole site past the hero is paper-toned now, so this is
-// everything except the hero's own dark video/wash opening.
-const LIGHT_SECTIONS = new Set(['about', 'work', 'contact'])
+// over these. The hero is a newsprint front page now, so the whole site is
+// paper-toned and the header reads in ink everywhere.
+const LIGHT_SECTIONS = new Set(['top', 'about', 'work', 'contact'])
 
 export default function Nav() {
   const [active, setActive] = useState('top')

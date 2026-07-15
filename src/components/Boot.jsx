@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // film byte-by-byte (85%) and waits on the webfonts (15%), then powers the
 // "CRT" off to reveal the site. Hands the fetched film back as a blob URL so
 // the hero never downloads it twice.
-const FILM = '/Hero-inspo.mp4'
+const FILM = '/Hero-News.mp4'
 const FILM_WEIGHT = 0.85
 const FONT_WEIGHT = 0.15
 const MIN_BOOT_MS = 1400 // don't flash even on a hot cache

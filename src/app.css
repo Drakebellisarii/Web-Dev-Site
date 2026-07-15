@@ -315,276 +315,490 @@
   .boot__cursor { animation: none; }
 }
 
-/* ---------- HERO ---------- */
+/* ---------- HERO — THE BELLISARI TIMES, page one ---------- */
+/* The hero is a broadsheet front page. The film — already halftone-screened
+   like a wire photo — runs as the front-page photograph, a portrait that
+   refuses to hold still. Normal document flow: a newspaper is a page, not a
+   scroll-scrubbed pin track. */
 .hero {
   position: relative;
-  /* svh, not vh — mobile URL bars make 100vh overshoot the visible screen */
-  min-height: 100vh;
   min-height: 100svh;
-  background: var(--char);
+  background: var(--paper);
 }
 
-/* Mobile / tablet: ordinary section. The sticky inner just flows. */
-.hero__sticky {
-  position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
-  overflow: hidden;
-  padding: clamp(84px, 12vh, 130px) 0 56px;
-}
-
-/* Desktop: tall scroll track; the inner pins to the viewport while the paint
-   video scrubs with scroll and the text holds back until the end. */
-@media (min-width: 861px) {
-  .hero { height: 360vh; min-height: 0; }
-  .hero__sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    min-height: 0;
-    overflow: hidden;
-    padding: clamp(104px, 14vh, 150px) 0 60px;
-  }
-}
-
-/* Video background — full-bleed, natural crop (no extra zoom offset) */
-.hero__video-wrap {
+/* Fold shading — a faint horizontal crease and a soft press-shadow along the
+   top edge keep the flat sheet from reading as a screen */
+.hero::before {
+  content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
-}
-
-.hero__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Parchment print-wash — rises over the film's final frame so the ad type
-   sets on paper, not on raw video. Radial: the Mac stays vivid film in the
-   middle of the page while the margins go full paper, like a photograph
-   printed in the ad. Opacity is scroll-driven from the JSX. */
-/* Tight spotlight on the screen itself, not the whole Mac — clear straight
-   through the glass, a thin ember bloom right at the tube's edge (like
-   phosphor glow), then a fast resolve to paper. */
-.hero__wash {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(
-    ellipse 30% 27% at 47% 38%,
-    rgba(239, 232, 216, 0) 0%,
-    rgba(239, 232, 216, 0) 60%,
-    rgba(216, 99, 42, 0.22) 72%,
-    rgba(239, 232, 216, 0.7) 86%,
-    var(--paper) 100%
-  );
   pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 47%, rgba(30, 34, 27, 0.05) 52%, transparent 57%),
+    radial-gradient(130% 46% at 50% 0%, rgba(30, 34, 27, 0.055), transparent 62%);
 }
 
-/* Subtle top scrim — keeps the fixed header legible over both the raw film
-   and the washed print frame. Sits above the wash. */
-.hero__overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(180deg, rgba(14,16,12,0.5) 0%, rgba(14,16,12,0.12) 16%, transparent 36%);
-  pointer-events: none;
-}
-
-/* ---- The 1984 print-ad composition, set around the film's last frame ----
-   Headline top-left, second line bottom-right, tagline and fine print
-   centered at the bottom — ink on parchment. */
-.hero__ad {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(96px, 13vh, 140px) clamp(24px, 4vw, 64px) clamp(26px, 4vh, 44px);
-  pointer-events: none;
-}
-
-.hero__ad-head-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.hero__ad-head {
-  color: var(--ink);
-  font-size: clamp(30px, 4.2vw, 64px);
-  font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  max-width: 22ch;
-}
-
-.hero__ad-line2 {
-  color: var(--ember);
-  font-size: clamp(30px, 4.2vw, 64px);
-  font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  margin: 0;
-}
-
-/* Blinking caret while the design/develop/ship cycle is typing — reuses the
-   terminal's own blink timing so the two feel like the same machine */
-.hero__ad-line2-cursor {
-  display: inline-block;
-  width: 0.5ch;
-  height: 0.85em;
-  margin-left: 2px;
-  background: var(--ember);
-  vertical-align: -0.08em;
-  animation: terminal-blink 1s steps(1) infinite;
-}
-
-/* Desktop only — pulled out of the stack and anchored to the section's
-   bottom-right corner, well clear of the fine print below it. Single line,
-   same as the headline — sized to its own content, not wrapped. */
-@media (min-width: 861px) {
-  .hero__ad-line2 {
-    position: absolute;
-    right: clamp(24px, 4vw, 64px);
-    bottom: clamp(120px, 18vh, 195px);
-    white-space: nowrap;
-    text-align: right;
-  }
-}
-
-.hero__ad-foot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  text-align: center;
-}
-.hero__ad-fine {
-  font-family: var(--display);
-  font-style: italic;
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  color: var(--ink-mute);
-  margin: 0;
-}
-
-/* Hero CTA — no pill, no fill: a set line of type, like the ad's own
-   printed footer. A faint rule sits under it; on hover an ember line
-   draws over the rule from the left and the arrow advances. The ad is
-   pointer-events: none so type never blocks the film; the CTA opts in. */
-.hero__cta {
-  pointer-events: auto;
+/* The column well of the sheet */
+.np-page {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  padding: 10px 2px;
+  z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: clamp(100px, 13vh, 140px) clamp(20px, 3.4vw, 56px) clamp(28px, 4vh, 48px);
 }
-.hero__cta::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+
+/* ── Agate line — volume, dateline, price ── */
+.np-agate {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 7px 2px 6px;
+  font-family: var(--display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Thick-thin double rule — the classic cut below the dateline */
+.np-rule-double {
+  height: 8px;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin-top: clamp(10px, 1.6vw, 18px);
+}
+
+/* ── Banner headline ── */
+.np-head-block {
+  position: relative;
+  padding: clamp(26px, 4vw, 52px) 0 clamp(20px, 3vw, 36px);
+}
+
+.np-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+}
+
+/* Kicker — spaced caps between long hairlines */
+.np-head__kicker {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 28px);
+  width: 100%;
+  font-family: var(--headline);
+  font-weight: 600;
+  font-size: clamp(15px, 1.9vw, 26px);
+  letter-spacing: 0.36em;
+  text-indent: 0.36em; /* balances the tracking so the line stays centered */
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.np-head__kicker::before,
+.np-head__kicker::after {
+  content: "";
+  flex: 1;
   height: 1px;
   background: var(--rule);
 }
-.hero__cta::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--ember);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s var(--ease-out);
-  z-index: 1;
-}
-.hero__cta:hover::before { transform: scaleX(1); }
-.hero__cta svg {
-  transition: transform 0.35s var(--ease-out);
-}
-.hero__cta:hover svg { transform: translateX(5px); }
 
-.btn {
+/* The banner itself — grand didone, edge to edge */
+.np-head__banner {
+  font-family: var(--headline);
+  font-weight: 800;
+  font-size: clamp(46px, 9.3vw, 146px);
+  line-height: 0.98;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-top: clamp(10px, 1.8vw, 26px);
+  text-wrap: balance;
+}
+
+/* Deck — italic, set between hairlines like a proper subhead */
+.np-head__deck {
+  font-family: var(--headline);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(17px, 2.2vw, 30px);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--ink-2);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(10px, 1.4vw, 16px) clamp(12px, 3vw, 40px);
+  margin-top: clamp(16px, 2.4vw, 30px);
+}
+
+/* Red rubber stamp — thumps down over the head block after printing */
+.np-stamp {
+  position: absolute;
+  top: clamp(0px, 1.2vw, 20px);
+  right: clamp(0px, 2vw, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: clamp(96px, 9vw, 128px);
+  aspect-ratio: 1;
+  border: 2px solid var(--ember);
+  border-radius: 50%;
+  color: var(--ember);
+  font-family: var(--headline);
+  font-weight: 700;
+  font-size: clamp(13px, 1.2vw, 17px);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.np-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--ember);
+  border-radius: 50%;
+}
+
+/* ── Page body — article | photograph | index & classifieds ── */
+.np-body {
+  --col-gap: clamp(22px, 2.8vw, 40px);
+  display: grid;
+  grid-template-columns: 1fr 1.42fr 1fr;
+  grid-template-areas: "left photo right";
+  gap: var(--col-gap);
+  align-items: start;
+  padding-top: clamp(4px, 1vw, 12px);
+}
+
+.np-article { grid-area: left; position: relative; }
+.np-photo   { grid-area: photo; }
+.np-aside   { grid-area: right; position: relative; }
+
+/* Column rules living in the gutters */
+.np-article::after,
+.np-aside::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule);
+}
+.np-article::after { right: calc(var(--col-gap) / -2); }
+.np-aside::before  { left: calc(var(--col-gap) / -2); }
+
+/* Lead article — centered column head, justified serif body, drop cap */
+.np-article__head {
+  font-family: var(--headline);
+  font-weight: 750;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.14;
+  text-align: center;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 12px;
+  margin: 0 0 14px;
+}
+
+.np-article p {
+  font-family: var(--display);
+  font-size: 13.5px;
+  line-height: 1.62;
+  letter-spacing: 0;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+}
+
+.np-article > p:first-of-type::first-letter {
+  font-family: var(--headline);
+  font-weight: 800;
+  font-size: 50px;
+  line-height: 0.8;
+  float: left;
+  padding: 7px 8px 0 0;
+  color: var(--ink);
+}
+
+.np-article__sub {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  margin: 18px 0 10px;
+}
+
+/* "Continued on…" jump line */
+.np-jump {
+  font-style: italic;
+  color: var(--ember);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease-out);
+}
+.np-jump:hover { border-bottom-color: var(--ember); }
+
+/* Front-page photograph — the living portrait */
+.np-photo { margin: 0; }
+.np-photo__frame {
+  border: 1px solid rgba(30, 34, 27, 0.8);
+  background: var(--paper-2);
+}
+.np-photo__video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1292 / 1604;
+  object-fit: cover;
+  display: block;
+}
+.np-photo__caption {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin-top: 10px;
+}
+.np-photo__credit {
+  font-family: var(--display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 6px 0 0;
+}
+
+/* Right rail */
+.np-aside {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.4vw, 26px);
+}
+
+/* Index box — double keyline, dot leaders */
+.np-inside {
+  border: 3px double var(--ink);
+  padding: 14px 16px 10px;
+}
+.np-inside__head {
+  font-family: var(--headline);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 9px;
+  margin: 0 0 4px;
+}
+.np-inside a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.np-inside a + a { border-top: 1px solid var(--rule-soft); }
+.np-inside a span { transition: color 0.3s var(--ease-out); }
+.np-inside a:hover span { color: var(--ember); }
+.np-inside i {
+  flex: 1;
+  border-bottom: 1px dotted var(--ink-faint);
+  transform: translateY(-3px);
+}
+.np-inside b {
+  font-family: var(--headline);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* News brief */
+.np-brief__head {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 0;
+  margin: 0 0 10px;
+}
+.np-brief p {
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* Classified box — the ad that hires the paper's own author */
+.np-classified {
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
+  margin: 4px; /* room for the outline */
+  padding: 16px 16px 18px;
+  text-align: center;
+}
+.np-classified__head {
+  font-family: var(--headline);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 9px;
+  margin: 0 0 10px;
+}
+.np-classified p {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+/* CTA — a solid ink slug, like a print ad's coupon button */
+.np-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 20px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--headline);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-indent: 0.26em;
+  text-transform: uppercase;
+  transition: background 0.35s var(--ease-out);
+}
+.np-cta:hover { background: var(--ember); }
+.np-cta svg { transition: transform 0.35s var(--ease-out); }
+.np-cta:hover svg { transform: translateX(5px); }
+
+/* ── Folio — the bottom of page one ── */
+.np-folio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(26px, 4vh, 44px);
+  border-top: 2px solid var(--ink);
+  padding-top: 10px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.np-folio__colophon {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 22px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  border-radius: 0;
-  transition: all 0.4s var(--ease-out);
-  position: relative;
-  overflow: hidden;
+}
+.np-barcode {
+  display: inline-block;
+  width: 72px;
+  height: 20px;
+  opacity: 0.75;
+  background:
+    repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 8px);
 }
 
-.btn--primary {
-  background: transparent;
-  color: var(--ember);
-  border: 1px solid var(--ember);
-}
-.btn--primary:hover {
-  background: var(--ember);
-  color: var(--paper);
-  border-color: var(--ember);
-  transform: translateY(-2px);
-}
+/* ── Tablet: photograph goes full-measure, columns pair up below ── */
+@media (max-width: 960px) {
+  .np-body {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "photo photo"
+      "left  right";
+  }
+  .np-article::after { display: none; }
 
-.btn--ghost {
-  color: var(--paper);
-  border: 1px solid rgba(239, 232, 216, 0.65);
-  background: rgba(239, 232, 216, 0.08);
-}
-.btn--ghost:hover {
-  border-color: var(--paper);
-  background: rgba(239, 232, 216, 0.16);
-  transform: translateY(-2px);
-}
-
-@media (max-width: 720px) {
-  .hero__sticky { padding: 90px 0 70px; }
-  .hero__video { object-position: center center; }
-
-  /* Same tight spotlight-on-the-screen treatment, sized for the portrait crop */
-  .hero__wash {
-    background: radial-gradient(
-      ellipse 68% 22% at 50% 47%,
-      rgba(239, 232, 216, 0) 0%,
-      rgba(239, 232, 216, 0) 58%,
-      rgba(216, 99, 42, 0.22) 71%,
-      rgba(239, 232, 216, 0.72) 86%,
-      var(--paper) 100%
-    );
+  /* The banner runs nearly full measure here — hang the stamp up over the
+     masthead rules instead so it never sits on the name itself */
+  .np-stamp {
+    top: -30px;
+    right: 0;
+    width: 86px;
+    font-size: 11.5px;
   }
 
-  .hero__ad {
-    /* Clears the fixed header's ~124px frosted-blur band so the headline
-       doesn't render smudged under it */
-    padding: 132px 24px 30px;
+  .np-photo {
+    max-width: 540px;
+    width: 100%;
+    justify-self: center;
   }
-  .hero__ad-head {
-    font-size: clamp(30px, 9vw, 44px);
-    max-width: 100%;
-  }
+  .np-photo__caption,
+  .np-photo__credit { text-align: center; }
 }
 
-/* marquee removed */
+/* ── Mobile: single column, ears folded away ── */
+@media (max-width: 680px) {
+  .np-page { padding-top: 116px; }
+
+  .np-agate {
+    justify-content: center;
+    font-size: 9px;
+  }
+  .np-agate span:first-child,
+  .np-agate span:last-child { display: none; }
+
+  .np-stamp { display: none; }
+
+  .np-head__banner { font-size: clamp(44px, 13vw, 64px); }
+  .np-head__kicker { letter-spacing: 0.26em; text-indent: 0.26em; }
+
+  .np-body {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "photo"
+      "left"
+      "right";
+  }
+  .np-aside::before { display: none; }
+
+  .np-folio {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
 
 /* ---------- ABOUT ---------- */
 /* White — matches the animation's own background exactly, so the video's

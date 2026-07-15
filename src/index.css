@@ -46,6 +46,7 @@
 
   /* Type */
   --display: "Gowun Batang", "Batang", "Times New Roman", serif;
+  --headline: "Bodoni Moda", "Didot", "Bodoni MT", "Times New Roman", serif; /* grand broadsheet banner didone */
   --body: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif; /* clean sans — wordmark, form inputs */
   --prose: "Alumni Sans SC", "Inter Tight", sans-serif; /* small-caps — body paragraphs & general text */
   --mono: "Torrance", "JetBrains Mono", ui-monospace, monospace;
@@ -174,22 +175,6 @@ button {
 img, video {
   display: block;
   max-width: 100%;
-}
-
-/* ── Mobile CSS animations (replace Framer Motion on touch devices) ── */
-@keyframes heroSlideUp {
-  from { transform: translateY(115%); }
-  to   { transform: translateY(0); }
-}
-
-@keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.hero__fade-up {
-  opacity: 0;
-  animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ── App container ── */
