@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Magnetic from '../components/Magnetic'
 
 const LINKS = [
   { href: '#about',   label: 'about',   id: 'about' },
@@ -70,12 +71,14 @@ export default function Nav() {
           ))}
         </nav>
 
-        <a href="#contact" className="site-header__cta">
-          start a project
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-            <path d="M2 8 L8 2 M3.4 2 L8 2 L8 6.6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </a>
+        <Magnetic>
+          <a href="#contact" className="site-header__cta">
+            start a project
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+              <path d="M2 8 L8 2 M3.4 2 L8 2 L8 6.6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </Magnetic>
 
         <button
           className={`site-header__burger${open ? ' is-open' : ''}`}

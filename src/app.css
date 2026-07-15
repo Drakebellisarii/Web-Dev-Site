@@ -318,7 +318,9 @@
 /* ---------- HERO ---------- */
 .hero {
   position: relative;
+  /* svh, not vh — mobile URL bars make 100vh overshoot the visible screen */
   min-height: 100vh;
+  min-height: 100svh;
   background: var(--char);
 }
 
@@ -326,8 +328,9 @@
 .hero__sticky {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
-  padding: clamp(96px, 13vh, 130px) 0 70px;
+  padding: clamp(84px, 12vh, 130px) 0 56px;
 }
 
 /* Desktop: tall scroll track; the inner pins to the viewport while the paint
@@ -470,6 +473,51 @@
   color: var(--ink-mute);
   margin: 0;
 }
+
+/* Hero CTA — no pill, no fill: a set line of type, like the ad's own
+   printed footer. A faint rule sits under it; on hover an ember line
+   draws over the rule from the left and the arrow advances. The ad is
+   pointer-events: none so type never blocks the film; the CTA opts in. */
+.hero__cta {
+  pointer-events: auto;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  padding: 10px 2px;
+}
+.hero__cta::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--rule);
+}
+.hero__cta::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--ember);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+  z-index: 1;
+}
+.hero__cta:hover::before { transform: scaleX(1); }
+.hero__cta svg {
+  transition: transform 0.35s var(--ease-out);
+}
+.hero__cta:hover svg { transform: translateX(5px); }
 
 .btn {
   display: inline-flex;

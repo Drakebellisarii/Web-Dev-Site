@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Magnetic from '../components/Magnetic'
 
 const SERVICE_OPTIONS = [
   'Marketing / Landing Page',
@@ -52,18 +53,22 @@ export default function Contact() {
                     <span className="contact__sent-icon">✓</span>
                     <h3 className="display">Message sent.</h3>
                     <p>I&rsquo;ll reply within 48 hours.</p>
-                    <button className="contact__sent-reset" onClick={() => { setStatus('idle'); setForm({ name: '', email: '', service: '', message: '' }) }}>
-                      Send another
-                    </button>
+                    <Magnetic>
+                      <button className="contact__sent-reset" onClick={() => { setStatus('idle'); setForm({ name: '', email: '', service: '', message: '' }) }}>
+                        Send another
+                      </button>
+                    </Magnetic>
                   </div>
                 ) : status === 'error' ? (
                   <div className="contact__sent">
                     <span className="contact__sent-icon contact__sent-icon--error">✗</span>
                     <h3 className="display">Something went wrong.</h3>
                     <p>Please try again or email me directly at dpbellisari@gmail.com.</p>
-                    <button className="contact__sent-reset" onClick={() => setStatus('idle')}>
-                      Try again
-                    </button>
+                    <Magnetic>
+                      <button className="contact__sent-reset" onClick={() => setStatus('idle')}>
+                        Try again
+                      </button>
+                    </Magnetic>
                   </div>
                 ) : (
                   <form className="contact__form" onSubmit={handleSubmit} noValidate>
@@ -91,16 +96,18 @@ export default function Contact() {
                       <textarea id="cf-message" rows={4} placeholder="What does your business do? What do you want the site to accomplish? Any timing in mind?" value={form.message} onChange={set('message')} required />
                     </div>
 
-                    <button type="submit" className="contact__submit" disabled={status === 'sending'}>
-                      {status === 'sending' ? 'Sending…' : (
-                        <>
-                          Send message
-                          <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                            <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </>
-                      )}
-                    </button>
+                    <Magnetic block strength={0.12}>
+                      <button type="submit" className="contact__submit" disabled={status === 'sending'}>
+                        {status === 'sending' ? 'Sending…' : (
+                          <>
+                            Send message
+                            <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                              <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </>
+                        )}
+                      </button>
+                    </Magnetic>
                   </form>
                 )}
               </div>

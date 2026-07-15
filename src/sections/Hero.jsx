@@ -6,10 +6,11 @@ import {
   useMotionValueEvent,
   transform,
 } from 'framer-motion'
+import Magnetic from '../components/Magnetic'
 
 // Desktop / laptop and larger — gets the scroll-scrubbed video hero.
-// Smaller screens get the same "scroll to start it" film, just not scrubbed
-// frame-by-frame (no 300vh pin track on mobile — perf).
+// Smaller screens get an autoplaying film and timed type-on instead — no
+// tall pin track on mobile (perf), and no waiting on scroll gestures.
 const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 861px)').matches
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -70,7 +71,6 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
   const line2FrameRef = useRef(0)
   const line2StartedRef = useRef(false)
 
-  const [revealed, setRevealed] = useState(false)
   const [wordsShown, setWordsShown] = useState(0)
   const [line2Active, setLine2Active] = useState(false)
   const [line2Text, setLine2Text] = useState('')
@@ -161,43 +161,6 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
 
   const line2Done = line2Text === LINE2_FULL
 
-  // Mobile only: hold the visitor here until the timed sequence finishes.
-  // Desktop needs no lock anymore — both lines are scroll-scrubbed there,
-  // so the scroll gesture *is* the animation and nothing can be missed.
-  // Only forward motion is blocked — scrolling back up stays free.
-  useEffect(() => {
-    if (isDesktop) return
-    const shouldLock = revealed && !line2Done
-    if (!shouldLock) return
-
-    let touchStartY = 0
-
-    const onWheel = (e) => {
-      if (e.deltaY > 0) e.preventDefault()
-    }
-    const onTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY
-    }
-    const onTouchMove = (e) => {
-      if (touchStartY - e.touches[0].clientY > 0) e.preventDefault()
-    }
-    const onKeyDown = (e) => {
-      if (['ArrowDown', 'PageDown', ' ', 'End'].includes(e.key)) e.preventDefault()
-    }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: false })
-    window.addEventListener('keydown', onKeyDown)
-
-    return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [line2Done, revealed])
-
   // Desktop: scrub the film frame-by-frame against scroll progress.
   useEffect(() => {
     if (!isDesktop) return
@@ -234,31 +197,26 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
     }
   }, [scrollYProgress])
 
-  // Mobile/tablet: nothing plays until the visitor actually scrolls — no
-  // scrub track here, so this is a one-shot play() plus a timed word-by-
-  // word type-on of the headline. Line 2's cycle picks up automatically
-  // once wordsShown reaches the end (same effect as the desktop path).
+  // Mobile/tablet: no scrub track, so everything runs on load — muted
+  // inline video autoplays immediately (waiting for a scroll gesture broke
+  // iOS's play() gesture rules and left a dead first paint), the headline
+  // types on right away, and line 2's cycle picks up automatically once
+  // wordsShown reaches the end. Scrolling is never blocked.
   useEffect(() => {
     if (isDesktop) return
     const v = videoRef.current
-    if (!v) return
-
-    let done = false
-    const start = () => {
-      if (done) return
-      done = true
+    if (v) {
+      v.muted = true
       v.play().catch(() => {})
-      setRevealed(true)
-      let i = 0
-      const id = setInterval(() => {
-        i += 1
-        setWordsShown(Math.min(i, LINE1_WORDS.length))
-        if (i >= LINE1_WORDS.length) clearInterval(id)
-      }, 160)
-      window.removeEventListener('scroll', start)
     }
-    window.addEventListener('scroll', start, { passive: true })
-    return () => window.removeEventListener('scroll', start)
+
+    let i = 0
+    const id = setInterval(() => {
+      i += 1
+      setWordsShown((w) => Math.max(w, Math.min(i, LINE1_WORDS.length)))
+      if (i >= LINE1_WORDS.length) clearInterval(id)
+    }, 160)
+    return () => clearInterval(id)
   }, [])
 
   const line1Shown = LINE1_WORDS.slice(0, Math.min(wordsShown, LINE1_WORDS.length)).join(' ')
@@ -290,7 +248,7 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
               className="hero__ad-head display"
               style={isDesktop ? { opacity: headOpacity, y: headY } : undefined}
               initial={isDesktop ? undefined : { opacity: 0, y: 20 }}
-              animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
+              animate={isDesktop ? undefined : { opacity: 1, y: 0 }}
               transition={isDesktop ? undefined : { duration: 0.6, ease: EASE }}
               aria-label={`${LINE1} ${LINE2_FULL}`}
             >
@@ -305,7 +263,7 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
               className="hero__ad-line2 display"
               style={isDesktop ? { opacity: headOpacity, y: headY } : undefined}
               initial={isDesktop ? undefined : { opacity: 0, y: 20 }}
-              animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 20 }}
+              animate={isDesktop ? undefined : { opacity: 1, y: 0 }}
               transition={isDesktop ? undefined : { duration: 0.6, ease: EASE }}
               aria-hidden="true"
             >
@@ -318,9 +276,17 @@ export default function Hero({ src = '/Hero-inspo.mp4' }) {
             className="hero__ad-foot"
             style={isDesktop ? { opacity: tagOpacity, y: tagY } : undefined}
             initial={isDesktop ? undefined : { opacity: 0, y: 18 }}
-            animate={isDesktop ? undefined : { opacity: revealed ? 1 : 0, y: revealed ? 0 : 18 }}
+            animate={isDesktop ? undefined : { opacity: 1, y: 0 }}
             transition={isDesktop ? undefined : { duration: 0.7, delay: 0.15, ease: EASE }}
           >
+            <Magnetic>
+              <a href="#contact" className="hero__cta">
+                start a project
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+                  <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </Magnetic>
           </motion.div>
         </div>
       </div>
