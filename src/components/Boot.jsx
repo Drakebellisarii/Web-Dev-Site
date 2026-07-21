@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Retro Macintosh boot screen — real progress, not theater. Streams the hero
-// film byte-by-byte (85%) and waits on the webfonts (15%), then powers the
-// "CRT" off to reveal the site. Hands the fetched film back as a blob URL so
-// the hero never downloads it twice.
-const FILM = '/Hero-News.mp4'
+// Real progress, not theater. Streams the hero film byte-by-byte (85%) and
+// waits on the webfonts (15%), then fades to reveal the site. Hands the
+// fetched film back as a blob URL so the hero never downloads it twice.
+// Drop your real hero clip in public/hero.mp4 — until then this fetch 404s
+// gracefully and the hero's dot-grid floor stands in as the background.
+const FILM = '/hero.mp4'
 const FILM_WEIGHT = 0.85
 const FONT_WEIGHT = 0.15
 const MIN_BOOT_MS = 1400 // don't flash even on a hot cache
@@ -117,36 +118,18 @@ export default function Boot({ onReady, onGone }) {
       }}
     >
       <div className="boot__core">
-        {/* Little Macintosh, wearing the wordmark's semicolon */}
-        <svg
-          className="boot__mac"
-          viewBox="0 0 56 66"
-          width="84"
-          height="99"
-          aria-hidden
-          shapeRendering="crispEdges"
-        >
-          <rect x="4" y="2" width="48" height="52" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
-          <rect x="11" y="9" width="34" height="26" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
-          <text x="28" y="29" textAnchor="middle" fontSize="17" fill="currentColor" fontFamily="inherit">
-            ;
-          </text>
-          <rect x="30" y="42" width="14" height="4" fill="currentColor" />
-          <rect x="10" y="58" width="36" height="2" fill="currentColor" opacity="0.5" />
-        </svg>
+        <div className="boot__pct" aria-hidden>
+          {pct}
+          <span className="boot__pct-sign">%</span>
+        </div>
 
         <div className="boot__bar" aria-hidden>
           <div className="boot__bar-fill" style={{ width: `${pct}%` }} />
         </div>
 
-        <p className="boot__label" aria-hidden>
-          Crafting your Experience<span className="boot__cursor">_</span>
+        <p className="boot__label eyebrow" aria-hidden>
+          Loading
         </p>
-      </div>
-
-      <div className="boot__pct" aria-hidden>
-        {pct}
-        <span className="boot__pct-sign">%</span>
       </div>
     </div>
   )

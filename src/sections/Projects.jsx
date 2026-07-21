@@ -89,8 +89,9 @@ export default function Projects() {
   return (
     <section className="work" id="work" ref={containerRef}>
       <div className="work__header shell">
+        <span className="eyebrow">Selected Work</span>
         <h2 className="work__title display">
-          Featured <em className="display-italic">Projects</em>.
+          A few things I&rsquo;ve <em className="display-italic">shipped</em>.
         </h2>
       </div>
 

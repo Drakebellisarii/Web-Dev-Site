@@ -1,35 +1,28 @@
-// No frame, no box — the section background matches the animation's own
-// white background exactly, so the video's edges disappear into the page.
+// Photo placeholder — fixed aspect-ratio box, ready for a real <img> with
+// the .about__photo duotone filter already wired up (grayscale + contrast).
+// Swap the placeholder <div> below for:
+//   <img className="about__photo" src="/about.jpg" alt="Drake Bellisari" loading="lazy" />
 export default function About() {
   return (
     <section className="about" id="about">
       <div className="shell about__grid">
         <div className="about__portrait">
-          <video
-            className="about__video"
-            src="/Drake-animate-web.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label="Animated illustration of Drake Bellisari working at his laptop"
-          />
+          <div className="about__photo about__photo--placeholder" role="img" aria-label="Portrait of Drake Bellisari, placeholder">
+            <span className="eyebrow">Portrait &middot; duotone</span>
+          </div>
         </div>
 
         <div className="about__content">
-          <span className="eyebrow">About.ME</span>
+          <span className="eyebrow">About</span>
 
-          <h2 className="about__title display">
-            One person, start to finish
-          </h2>
+          <h2 className="about__title display">One person, start to finish.</h2>
 
           <div className="about__body">
             <p>
-              I&rsquo;m Drake. A recent Computer Science graduate from Trinity College, where I spent four years playing football and becoming fascinated by how great software is built. I&rsquo;m drawn to the intersection of engineering and design, where thoughtful code, performance, and user experience come together to create products that people genuinely enjoy using. Whether I&rsquo;m building a marketing website or a full web application, my goal is always the same. Build software that feels fast, intuitive, and made with intention.
+              I&rsquo;m Drake — I design and build the whole thing myself: strategy, interface, code, deploy. I studied computer science at Trinity College, and played four years of football, which taught me more about shipping under pressure than any class did.
             </p>
             <p>
-              I&rsquo;m not a large agency, and I think that&rsquo;s a strength. You won&rsquo;t have a dedicated project manager, a sales team, or layers of people between us. It&rsquo;s me on the call, me designing, me writing the code, and me shipping the final product. The tradeoff is simple. I can only take on a limited number of projects at a time. In return, every decision, every line of code, and every interaction gets my full attention. I care about the parts most people skip. The loading state, the hover that feels considered, the polish that makes something feel crafted instead of assembled.
+              No account managers, no handoff between a &ldquo;creative team&rdquo; and a &ldquo;dev team&rdquo; — just one person who reads every note and writes every line. The tradeoff is I only take on a few projects at a time. What you get in return is a site that feels considered down to the hover states nobody else would bother with.
             </p>
           </div>
 

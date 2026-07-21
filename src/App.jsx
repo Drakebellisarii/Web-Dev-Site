@@ -6,9 +6,13 @@ import Scrollbar from './components/Scrollbar'
 import Boot from './components/Boot'
 import './app.css'
 
-const About    = lazy(() => import('./sections/About'))
-const Projects = lazy(() => import('./sections/Projects'))
-const Contact  = lazy(() => import('./sections/Contact'))
+const About        = lazy(() => import('./sections/About'))
+const Projects     = lazy(() => import('./sections/Projects'))
+const Testimonials = lazy(() => import('./sections/Testimonials'))
+const Process      = lazy(() => import('./sections/Process'))
+const TechStrip    = lazy(() => import('./sections/TechStrip'))
+const Manifesto    = lazy(() => import('./sections/Manifesto'))
+const Contact      = lazy(() => import('./sections/Contact'))
 
 // Touch devices get native momentum scroll — Lenis rAF loop hurts mobile perf
 const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
@@ -74,6 +78,10 @@ export default function App() {
             <Suspense fallback={null}>
               <About />
               <Projects />
+              <Testimonials />
+              <Process />
+              <TechStrip />
+              <Manifesto />
               <Contact />
             </Suspense>
           </main>

@@ -1,60 +1,55 @@
 /* ================================================================
-   DPBellisari WebDev — Editorial Forest Design System
+   DPBellisari WebDev — Design tokens
+   Strict monochrome. Two typefaces. Hierarchy from weight, size,
+   spacing, and gray value alone — never color.
    ================================================================ */
 
-/* Torrance — a genuine period Apple system-font recreation (Kreative
-   Software ReLay Fonts). This is the site's "machine voice": every eyebrow,
-   button, nav link, and piece of UI chrome that used to borrow a generic
-   programming mono now speaks in an actual Apple face instead. */
-@font-face {
-  font-family: "Torrance";
-  src: url("/torrance/Torrance.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
-  /* Surfaces — warm parchment to deep forest */
-  --paper: #efe8d8;
-  --paper-2: #e6dec9;
-  --paper-deep: #ddd2ba;
-  --bark: #2a2a23;
-  --moss-deep: #1a1f1a;
-  --char: #14160f;
+  /* Grayscale ramp — the entire palette */
+  --black:      #0a0a0a;
+  --gray-950:   #131313;
+  --gray-900:   #1b1b1b;
+  --gray-800:   #2a2a2a;
+  --gray-700:   #3d3d3d;
+  --gray-600:   #565656;
+  --gray-500:   #767676;
+  --gray-400:   #9a9a9a;
+  --gray-300:   #bcbcbc;
+  --gray-200:   #dcdcdc;
+  --gray-100:   #ececec;
+  --gray-50:    #f6f6f6;
+  --white:      #ffffff;
 
-  /* Ink */
-  --ink: #1e221b;
-  --ink-2: #3a3f33;
-  --ink-mute: #6c6f5e;
-  --ink-faint: #8c8d7c;
+  /* Semantic surfaces */
+  --surface:        var(--white);
+  --surface-alt:    var(--gray-50);
+  --surface-dark:   var(--black);
+  --surface-dark-alt: var(--gray-950);
 
-  /* Botanical greens — accents allowed sparingly */
-  --moss: #4a5a3f;
-  --sage: #7a8868;
-  --lichen: #b6b393;
+  /* Semantic ink */
+  --ink:        var(--black);
+  --ink-soft:   var(--gray-600);
+  --ink-faint:  var(--gray-400);
+  --ink-on-dark:       var(--white);
+  --ink-on-dark-soft:  var(--gray-300);
+  --ink-on-dark-faint: var(--gray-600);
 
-  /* THE accent — burnt orange — used only for emphasis */
-  --ember: #c04a18;
-  --ember-deep: #9a3a13;
-  --ember-glow: #d8632a;
+  /* Rules / hairlines */
+  --line:        rgba(10, 10, 10, 0.13);
+  --line-soft:   rgba(10, 10, 10, 0.07);
+  --line-dark:   rgba(255, 255, 255, 0.16);
+  --line-dark-soft: rgba(255, 255, 255, 0.08);
 
-  /* Lines / borders */
-  --rule: rgba(30, 34, 27, 0.18);
-  --rule-soft: rgba(30, 34, 27, 0.08);
-  --rule-light: rgba(239, 232, 216, 0.18);
+  /* Type — exactly two families */
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* Type */
-  --display: "Gowun Batang", "Batang", "Times New Roman", serif;
-  --headline: "Bodoni Moda", "Didot", "Bodoni MT", "Times New Roman", serif; /* grand broadsheet banner didone */
-  --body: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif; /* clean sans — wordmark, form inputs */
-  --prose: "Alumni Sans SC", "Inter Tight", sans-serif; /* small-caps — body paragraphs & general text */
-  --mono: "Torrance", "JetBrains Mono", ui-monospace, monospace;
-  --dot:  "Doto", "JetBrains Mono", ui-monospace, monospace; /* dot-matrix accent — numerals only */
-
-  /* Spacing & motion */
+  /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* One radius, used everywhere a corner needs softening — crisp, not soft */
+  --radius: 3px;
 }
 
 * {
@@ -71,33 +66,27 @@ html {
 }
 
 body {
-  font-family: var(--prose);
-  background: var(--paper);
+  font-family: var(--sans);
+  background: var(--surface);
   color: var(--ink);
   font-weight: 400;
   font-size: 16.5px;
-  line-height: 1.5;
-  letter-spacing: 0.015em; /* small caps read better with a touch of tracking */
+  line-height: 1.55;
   overflow-x: hidden;
-
 }
 
-/* Restore pointer cursor on touch devices — custom cursor doesn't apply */
 @media (hover: none) {
   body { cursor: auto; }
 }
 
-/* Native scrollbar hidden — custom orange thumb component handles this */
 html::-webkit-scrollbar { width: 0; }
 html { scrollbar-width: none; }
 
-/* Selection — burnt orange ink on parchment */
 ::selection {
-  background: var(--ember);
-  color: var(--paper);
+  background: var(--ink);
+  color: var(--surface);
 }
 
-/* Visually hidden but present for screen readers */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -110,53 +99,40 @@ html { scrollbar-width: none; }
   border: 0;
 }
 
-/* Subtle paper grain overlay */
+/* Very faint grain — the one "texture" allowed, ties every flat black/white
+   surface together without introducing color or imagery */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 100;
-  opacity: 0.35;
+  opacity: 0.025;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.13 0 0 0 0 0.10 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-/* Reusable type styles */
+/* Reusable type utilities */
 .eyebrow {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-mute);
-  font-weight: 500;
-}
-
-.eyebrow--ember {
-  color: var(--ember);
-}
-
-.eyebrow-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: var(--ember);
-  border-radius: 50%;
-  margin-right: 10px;
-  vertical-align: middle;
-  transform: translateY(-1px);
+  color: var(--ink-soft);
+  font-weight: 600;
 }
 
 .display {
   font-family: var(--display);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.02;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
   color: var(--ink);
 }
 
 .display-italic {
   font-style: italic;
+  font-weight: 500;
 }
 
 a {
@@ -177,7 +153,6 @@ img, video {
   max-width: 100%;
 }
 
-/* ── App container ── */
 #root {
   min-height: 100vh;
   position: relative;
@@ -198,4 +173,3 @@ section {
 @media (max-width: 720px) {
   .shell { padding: 0 24px; }
 }
-

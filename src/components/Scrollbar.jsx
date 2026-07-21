@@ -51,8 +51,8 @@ export default function Scrollbar() {
     }}>
       <div ref={thumbRef} style={{
         position: 'absolute', top: 0, width: '100%',
-        background: '#c04a18', borderRadius: '999px',
-        opacity: 0.75, willChange: 'transform, height',
+        background: '#ffffff', borderRadius: '999px',
+        mixBlendMode: 'difference', opacity: 0.9, willChange: 'transform, height',
       }} />
     </div>
   )
