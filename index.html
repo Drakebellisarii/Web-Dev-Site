@@ -21,11 +21,15 @@
     <meta name="twitter:description" content="Custom websites and web apps, designed and built by one person, start to finish. Based in Hartford, CT." />
     <meta name="twitter:image" content="/Process.webp" />
 
-    <!-- Font preconnect + preload — exactly two families: Fraunces (display) + Inter Tight (sans) -->
+    <!-- Baskerville (display, native on Mac/iOS) + Inter Tight (sans) are the
+         core system. Libre Baskerville loads as the webfont fallback for
+         anyone without real Baskerville installed. Climate Crisis is a
+         deliberate third face, scoped to only the three massive-type
+         moments (hero headline, "Let's talk" CTA, philosophy statement). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <!-- Hero film is fetched (with progress) by the boot screen — no preload
          hint here, it would double-download alongside the boot's streamed fetch -->
     <title>Drake Bellisari — Web Design & Development</title>

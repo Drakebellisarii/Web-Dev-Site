@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Magnetic from '../components/Magnetic'
-import { SCHEDULING_URL } from '../siteConfig'
 
 // No top bar. Two fixed, corner-anchored elements — a toggle mark and a
 // booking pill — sit directly on the page with mix-blend-mode: difference,
@@ -33,19 +32,22 @@ export default function Nav() {
 
   return (
     <>
-      <button
-        type="button"
-        className={`corner-mark${open ? ' is-open' : ''}`}
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? 'Close menu' : 'Open menu'}
-        aria-expanded={open}
-      >
-        <span />
-        <span />
-      </button>
+      <div className="corner-brand">
+        <button
+          type="button"
+          className={`corner-mark${open ? ' is-open' : ''}`}
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+        >
+          <span />
+          <span />
+        </button>
+        <span className="corner-name" aria-hidden="true">Drake Bellisari</span>
+      </div>
 
-      <Magnetic strength={0.2}>
-        <a href={SCHEDULING_URL} target="_blank" rel="noreferrer" className="corner-cta">
+      <Magnetic strength={0.2} className="corner-cta-wrap">
+        <a href="#book" className="corner-cta">
           Book a call
           <svg width="14" height="9" viewBox="0 0 14 9" fill="none" aria-hidden="true">
             <path d="M0 4.5h12M8.5 1l3.5 3.5L8.5 8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
@@ -85,7 +87,7 @@ export default function Nav() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, delay: 0.32, ease: EASE }}
             >
-              <a href={SCHEDULING_URL} target="_blank" rel="noreferrer" className="site-menu__book">
+              <a href="#book" className="site-menu__book" onClick={() => setOpen(false)}>
                 Book a call
                 <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
                   <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

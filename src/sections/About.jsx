@@ -1,14 +1,12 @@
-// Photo placeholder — fixed aspect-ratio box, ready for a real <img> with
-// the .about__photo duotone filter already wired up (grayscale + contrast).
-// Swap the placeholder <div> below for:
-//   <img className="about__photo" src="/about.jpg" alt="Drake Bellisari" loading="lazy" />
+import PhotoDepth from '../components/PhotoDepth'
+
 export default function About() {
   return (
     <section className="about" id="about">
       <div className="shell about__grid">
         <div className="about__portrait">
-          <div className="about__photo about__photo--placeholder" role="img" aria-label="Portrait of Drake Bellisari, placeholder">
-            <span className="eyebrow">Portrait &middot; duotone</span>
+          <div className="about__photo">
+            <PhotoDepth src="/Drake.webp" alt="Portrait of Drake Bellisari" />
           </div>
         </div>
 

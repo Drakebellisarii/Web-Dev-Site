@@ -11,7 +11,6 @@ const Projects     = lazy(() => import('./sections/Projects'))
 const Testimonials = lazy(() => import('./sections/Testimonials'))
 const Process      = lazy(() => import('./sections/Process'))
 const TechStrip    = lazy(() => import('./sections/TechStrip'))
-const Manifesto    = lazy(() => import('./sections/Manifesto'))
 const Contact      = lazy(() => import('./sections/Contact'))
 
 // Touch devices get native momentum scroll — Lenis rAF loop hurts mobile perf
@@ -81,7 +80,6 @@ export default function App() {
               <Testimonials />
               <Process />
               <TechStrip />
-              <Manifesto />
               <Contact />
             </Suspense>
           </main>

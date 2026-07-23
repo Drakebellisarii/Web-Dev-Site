@@ -7,19 +7,41 @@
 .app { min-height: 100vh; position: relative; }
 
 /* ---------- HEADER — corner mark + fullscreen menu, no bar ---------- */
-/* mix-blend-mode: difference means both elements auto-invert against any
-   section background (black or white) with zero scroll/theme JS. */
-.corner-mark,
-.corner-cta {
+/* mix-blend-mode: difference means these auto-invert against any section
+   background (black or white) with zero scroll/theme JS. */
+.corner-brand {
   position: fixed;
+  top: clamp(20px, 3vw, 32px);
+  left: clamp(20px, 3vw, 32px);
   z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.corner-mark,
+.corner-cta,
+.corner-name {
   color: var(--white);
   mix-blend-mode: difference;
 }
+.corner-cta {
+  position: fixed;
+  z-index: 300;
+}
+/* Magnetic's own wrapper span is otherwise a normal in-flow inline-block —
+   harmless around in-flow content, but around an already-fixed child it
+   leaves a phantom empty line box (~1 line-height) sitting in the document
+   flow above <main>, quietly pushing every section down by that amount.
+   position: fixed fixes that — but on its own, with z-index left at auto,
+   it also opens a *second* bug: it becomes its own stacking context at
+   the "auto" level, which traps the z-index:300 child's comparison inside
+   it, and loses to .hero__stage's z-index:0 on DOM-order tiebreak (Nav
+   renders before <main>) — the pill was rendering, just fully behind the
+   opaque canvas. The explicit z-index here is what actually fixes that. */
+.corner-cta-wrap { position: fixed; z-index: 300; }
 
 .corner-mark {
-  top: clamp(20px, 3vw, 32px);
-  left: clamp(20px, 3vw, 32px);
+  position: relative;
   width: 44px;
   height: 44px;
   display: flex;
@@ -37,6 +59,20 @@
 .corner-mark span:last-child { transform: rotate(90deg); }
 .corner-mark.is-open span:first-child { transform: rotate(45deg); }
 .corner-mark.is-open span:last-child { transform: rotate(-45deg); }
+
+/* Matches the footer wordmark's logic, extended to work on both light and
+   dark sections: mix-blend-mode: difference (same trick as the mark/pill)
+   means it's white on black, black on white, everywhere, automatically —
+   no scroll-based theme detection needed. Sits inline with the mark,
+   standard logo-plus-wordmark lockup. */
+.corner-name {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.6vw, 27px);
+  white-space: nowrap;
+  pointer-events: none;
+}
 
 .corner-cta {
   top: clamp(20px, 3vw, 32px);
@@ -110,55 +146,8 @@
 
 @media (max-width: 560px) {
   .corner-cta span { display: none; }
+  .corner-name { font-size: 19px; }
   .site-menu__links a { font-size: clamp(40px, 13vw, 64px); }
-}
-
-/* ---------- DOT FIELD — white dot-grid on black, no image assets ---------- */
-.dotfield {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.dotfield--floor {
-  pointer-events: auto;
-  perspective: 700px;
-  perspective-origin: 50% 30%;
-}
-.dotfield__plane {
-  position: absolute;
-  left: -30%;
-  right: -30%;
-  bottom: -20%;
-  height: 160%;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.55) 1.3px, transparent 1.6px);
-  background-size: 34px 34px;
-  transform-style: preserve-3d;
-  transform: rotateX(62deg);
-  animation: dotfield-drift 14s linear infinite;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 100%, #000 40%, transparent 92%);
-  mask-image: radial-gradient(120% 90% at 50% 100%, #000 40%, transparent 92%);
-}
-@keyframes dotfield-drift {
-  from { background-position: 0 0; }
-  to { background-position: 0 340px; }
-}
-.dotfield__horizon {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, var(--black) 0%, transparent 30%, transparent 70%, var(--black) 100%);
-}
-
-.dotfield--flat {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1.1px, transparent 1.4px);
-  background-size: 30px 30px;
-  -webkit-mask-image: radial-gradient(85% 85% at 50% 50%, #000 30%, transparent 90%);
-  mask-image: radial-gradient(85% 85% at 50% 50%, #000 30%, transparent 90%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dotfield__plane { animation: none; }
 }
 
 /* ---------- BOOT — minimal progress, no theatrics ---------- */
@@ -220,15 +209,19 @@
   min-height: 100svh;
   background: var(--black);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   overflow: hidden;
-  padding-bottom: clamp(56px, 9vh, 104px);
-  padding-top: clamp(120px, 20vh, 200px);
+  padding-top: clamp(90px, 12vh, 140px);
+  padding-bottom: clamp(60px, 9vh, 110px);
 }
 .hero__stage {
   position: absolute;
   inset: 0;
   z-index: 0;
+}
+.hero__dotfield {
+  position: absolute;
+  inset: 0;
 }
 .hero__video {
   position: absolute;
@@ -240,7 +233,9 @@
 .hero__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.5) 66%, rgba(10, 10, 10, 0.94) 100%);
+  /* Soft, bottom-weighted only — the dot field is already black, this is
+     just enough to guarantee the CTA reads over any bright dots beneath it. */
+  background: linear-gradient(180deg, transparent 55%, rgba(10, 10, 10, 0.55) 100%);
 }
 .hero__content {
   position: relative;
@@ -253,31 +248,54 @@
   margin-bottom: clamp(20px, 3.4vh, 34px);
 }
 .hero__title {
+  font-family: var(--display-huge);
+  font-weight: 400;
   font-size: clamp(42px, 7.6vw, 104px);
   color: var(--white);
 }
 .hero__title span { display: block; }
-.hero__deck {
-  margin-top: clamp(20px, 3vh, 28px);
-  max-width: 520px;
-  font-size: clamp(15px, 1.5vw, 18px);
-  color: var(--gray-300);
-}
 .hero__cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: clamp(32px, 5vh, 48px);
+  gap: 16px;
+  margin-top: clamp(24px, 3.6vh, 40px);
+  color: var(--white);
+}
+.hero__cta-label {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--white);
-  border-bottom: 1px solid var(--line-dark);
-  padding-bottom: 6px;
 }
-.hero__cta svg { transition: transform 0.35s var(--ease-out); }
-.hero__cta:hover svg { transform: translateX(4px); }
+.hero__cta-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--line-dark);
+  transition: background-color 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+}
+.hero__cta-ring svg {
+  color: var(--white);
+  transition: color 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+}
+.hero__cta:hover .hero__cta-ring {
+  background-color: var(--white);
+  border-color: var(--white);
+}
+.hero__cta:hover .hero__cta-ring svg {
+  color: var(--black);
+  transform: rotate(45deg);
+}
+.hero__cta:focus-visible .hero__cta-ring {
+  outline: 1px solid var(--white);
+  outline-offset: 4px;
+}
+
+.hero__dotfield--mobile { opacity: 0.7; }
 
 /* ---------- ABOUT ---------- */
 .about {
@@ -291,23 +309,56 @@
   align-items: center;
 }
 .about__photo {
-  display: flex;
-  align-items: flex-end;
+  position: relative;
   aspect-ratio: 4 / 5;
   width: 100%;
+  overflow: hidden;
   border: 1px solid var(--line);
   background: var(--surface-alt);
-  filter: grayscale(1) contrast(1.08);
 }
-.about__photo--placeholder {
-  padding: 18px;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--gray-100) 0 1px,
-    transparent 1px 14px
-  );
+/* PhotoDepth — two-layer cutout parallax standing in for a depth map.
+   See src/components/PhotoDepth.jsx for how the mask is computed. */
+.photo-depth {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
-.about__photo--placeholder .eyebrow { color: var(--ink-faint); }
+.photo-depth__bg,
+.photo-depth__fg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  will-change: transform;
+  /* Stylized B&W — true grayscale, a touch more contrast/density than the
+     source, so it reads as "treated" rather than a raw camera export. */
+  filter: grayscale(1) contrast(1.15) brightness(0.97);
+}
+.photo-depth__bg {
+  transform: scale(1.14);
+  filter: grayscale(1) contrast(1.1) brightness(0.85) blur(7px);
+}
+.photo-depth__fg {
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center top;
+  mask-position: center top;
+}
+/* Soft vignette, multiplied over the photo — the one bit of "duotone" a
+   strictly monochrome palette can offer: crushed edges, lifted center. */
+.about__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background: radial-gradient(120% 100% at 50% 32%, transparent 55%, rgba(0, 0, 0, 0.32) 100%);
+}
 .about__content { max-width: 540px; }
 .about__title {
   font-size: clamp(30px, 3.4vw, 44px);
@@ -584,64 +635,25 @@
   .techstrip__track { animation: none; }
 }
 
-/* ---------- MANIFESTO ---------- */
-.manifesto {
-  background: var(--black);
-  padding: clamp(140px, 20vh, 240px) 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-.manifesto__inner { position: relative; z-index: 1; }
-.manifesto__eyebrow {
-  display: block;
-  color: var(--gray-600);
-  margin-bottom: clamp(28px, 4vh, 44px);
-}
-.manifesto__statement {
-  font-size: clamp(32px, 5.4vw, 76px);
-  font-weight: 500;
-  line-height: 1.14;
-  color: var(--white);
-  max-width: 1180px;
-}
-.manifesto__statement em { color: var(--gray-400); }
-
 /* ---------- CLOSING CTA + CONTACT FORM ---------- */
 .cta {
   background: var(--black);
   color: var(--white);
-  padding-top: clamp(120px, 16vh, 180px);
+  padding-top: clamp(96px, 14vh, 160px);
 }
-.cta__top { padding-bottom: clamp(80px, 11vh, 120px); }
-.cta__title {
-  font-size: clamp(40px, 7vw, 92px);
-  margin: 18px 0 clamp(40px, 6vh, 56px);
-  max-width: 900px;
+.cta__panel-title {
   color: var(--white);
+  font-size: clamp(28px, 3.2vw, 40px);
+  margin: 14px 0 clamp(32px, 5vh, 44px);
 }
-.cta__actions {
-  display: flex;
-  align-items: center;
-  gap: clamp(24px, 4vw, 40px);
-  flex-wrap: wrap;
+.cta__book-block {
+  padding-bottom: clamp(96px, 14vh, 140px);
+  max-width: 720px;
+  scroll-margin-top: 100px;
 }
-.cta__book {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--white);
-  color: var(--black);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 18px 30px;
-  border-radius: 999px;
-}
-.cta__book svg { transition: transform 0.35s var(--ease-out); }
-.cta__book:hover svg { transform: translateX(4px); }
 .cta__secondary {
+  display: inline-block;
+  margin-top: clamp(24px, 3.5vh, 32px);
   font-size: 13px;
   color: var(--gray-500);
   border-bottom: 1px solid var(--line-dark-soft);
@@ -650,17 +662,76 @@
 }
 .cta__secondary:hover { color: var(--white); }
 
-.cta__panel {
-  border-top: 1px solid var(--line-dark-soft);
-  padding: clamp(56px, 8vh, 88px) 0 clamp(96px, 14vh, 140px);
-  max-width: 720px;
-  scroll-margin-top: 100px;
+/* ---------- SCHEDULER ---------- */
+.scheduler__status { color: var(--gray-500); }
+.scheduler__status a,
+.scheduler__status button { color: var(--white); border-bottom: 1px solid var(--line-dark); }
+
+.scheduler__days {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 20px;
+  scrollbar-width: none;
 }
-.cta__panel-label {
-  display: block;
-  margin-bottom: clamp(28px, 4vh, 40px);
-  color: var(--gray-500);
+.scheduler__days::-webkit-scrollbar { display: none; }
+.scheduler__day {
+  flex: none;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gray-400);
+  white-space: nowrap;
+  padding: 10px 16px;
+  border: 1px solid var(--line-dark);
+  border-radius: 999px;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
 }
+.scheduler__day:hover { color: var(--white); border-color: var(--gray-500); }
+.scheduler__day.is-active {
+  color: var(--black);
+  background: var(--white);
+  border-color: var(--white);
+}
+
+.scheduler__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.scheduler__slot {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-300);
+  padding: 10px 16px;
+  border: 1px solid var(--line-dark);
+  border-radius: 999px;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+.scheduler__slot:hover { color: var(--white); border-color: var(--gray-500); }
+.scheduler__slot.is-selected {
+  color: var(--black);
+  background: var(--white);
+  border-color: var(--white);
+}
+
+.scheduler__form { margin-top: 20px; }
+.scheduler__error {
+  color: var(--gray-300);
+  font-size: 13px;
+  border-left: 2px solid var(--gray-600);
+  padding-left: 10px;
+}
+.scheduler__meet-link {
+  font-size: 13px;
+  color: var(--gray-400);
+  border-bottom: 1px solid var(--line-dark-soft);
+  padding-bottom: 2px;
+}
+.scheduler__meet-link:hover { color: var(--white); }
 
 .contact__form { display: flex; flex-direction: column; gap: 22px; }
 .contact__form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
@@ -725,6 +796,48 @@
 @media (max-width: 640px) {
   .contact__form-row { grid-template-columns: 1fr; }
 }
+
+/* ---------- CONTACT MODAL ---------- */
+/* Above everything — corner elements (300), the fullscreen menu (250), the
+   boot screen (200). */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.modal__panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--black);
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+  padding: clamp(32px, 5vw, 48px);
+  color: var(--white);
+}
+.modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  border-radius: 50%;
+  transition: color 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+.modal__close:hover { color: var(--white); background: var(--gray-900); }
 
 /* ---------- FOOTER ---------- */
 .footer {

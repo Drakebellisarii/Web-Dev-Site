@@ -8,7 +8,7 @@ const canHover = typeof window !== 'undefined' && window.matchMedia('(hover: hov
 
 const SPRING = { stiffness: 320, damping: 22, mass: 0.6 }
 
-export default function Magnetic({ children, strength = 0.3, block = false }) {
+export default function Magnetic({ children, strength = 0.3, block = false, className = '' }) {
   const ref = useRef(null)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -16,7 +16,7 @@ export default function Magnetic({ children, strength = 0.3, block = false }) {
   const sy = useSpring(y, SPRING)
 
   if (!canHover) {
-    return <span style={{ display: block ? 'block' : 'inline-block' }}>{children}</span>
+    return <span className={className} style={{ display: block ? 'block' : 'inline-block' }}>{children}</span>
   }
 
   const onMouseMove = (e) => {
@@ -34,6 +34,7 @@ export default function Magnetic({ children, strength = 0.3, block = false }) {
   return (
     <motion.span
       ref={ref}
+      className={className}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       style={{ display: block ? 'block' : 'inline-block', x: sx, y: sy }}
